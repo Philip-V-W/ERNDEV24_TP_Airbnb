@@ -3,91 +3,139 @@
 namespace App;
 
 use App\Controller\AuthController;
-use App\Controller\HomeController;
-use App\Controller\PizzaController;
+use App\Controller\ResidenceController;
 use Core\Database\DatabaseConfigInterface;
 use MiladRahimi\PhpRouter\Exceptions\InvalidCallableException;
 use MiladRahimi\PhpRouter\Exceptions\RouteNotFoundException;
 use MiladRahimi\PhpRouter\Router;
 
+// Main application class that configures the database and router, and handles application startup.
 class App implements DatabaseConfigInterface
 {
+    // Singleton instance of the application
+    private static ?self $instance = null;
 
-  private static ?self $instance = null;
-  //on crée une méthode public appelé au demarrage de l'appli dans index.php
-  public static function getApp(): self
-  {
-    if (is_null(self::$instance)) {
-      self::$instance = new self();
+    /**
+     * Gets the singleton instance of the application.
+     * @return self The application instance.
+     */
+    public static function getApp(): self
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
-    return self::$instance;
-  }
 
-  //on crée une propriété privée pour stocker le routeur
-  private Router $router;
-  //méthode qui récupère les infos du routeur
-  public function getRouter()
-  {
-    return $this->router;
-  }
+    // Router instance
+    private Router $router;
 
-  private function __construct()
-  {
-    //on crée une instance de Router
-    $this->router = Router::create();
-  }
-
-  //on a 3 méthodes a définir 
-  // 1. méthode start pour activer le router
-  public function start(): void
-  {
-    //on ouvre l'accès aux sessions
-    session_start();
-    //enregistrements des routes
-    $this->registerRoutes();
-    //démarrage du router
-    $this->startRouter();
-  }
-
-  //2. méthode qui enregistre les routes
-  private function registerRoutes(): void
-  {
-    //ON ENREGISTRE LES ROUTES ICI
-    $this->router->get('/', [HomeController::class, 'home'] );
-    //INFO: si on veut renvoyer une vue à l'utilisateur => route en "get"
-    //INFO: si on veut traiter des données d'un formulaire => route en "post"
-
-  }
-
-  //3. méthode qui démarre le router
-  private function startRouter(): void
-  {
-    try {
-      $this->router->dispatch();
-    } catch (RouteNotFoundException $e) {
-      echo $e;
-    } catch (InvalidCallableException $e) {
-      echo $e;
+    /**
+     * Gets the router instance.
+     * @return Router The router instance.
+     */
+    public function getRouter(): Router
+    {
+        return $this->router;
     }
-  }
 
-  public function getHost(): string
-  {
-    return DB_HOST;
-  }
+    // Private constructor to prevent direct instantiation
+    private function __construct()
+    {
+        // Initialize the router
+        $this->router = Router::create();
+    }
 
-  public function getName(): string
-  {
-    return DB_NAME;
-  }
+    /**
+     * Starts the application.
+     * Initializes the session, registers routes, and starts the router.
+     * @return void
+     */
+    public function start(): void
+    {
+        session_start();
+        $this->registerRoutes();
+        $this->startRouter();
+    }
 
-  public function getUser(): string
-  {
-    return DB_USER;
-  }
+    /**
+     * Registers the routes for the application.
+     * @return void
+     */
+    private function registerRoutes(): void
+    {
+        // Define route pattern
+        $this->router->pattern('id', '[0-9]\d*'); // we only authorize numbers for the id
+        $this->router->pattern('order_id', '[0-9]\d*'); // we only authorize numbers for the order_id
 
-  public function getPass(): string
-  {
-    return DB_PASS;
-  }
+        // AUTHENTIFICATION SECTION:
+        $this->router->get('/login-form', [AuthController::class, 'loginForm']);
+        $this->router->post('/login', [AuthController::class, 'login']);
+        $this->router->get('/register-form', [AuthController::class, 'registerForm']);
+        $this->router->post('/register', [AuthController::class, 'register']);
+
+
+        // RESIDENCE SECTION:
+        $this->router->get('/', [ResidenceController::class, 'home']);
+
+        // CART SECTION:
+
+
+        // USER SECTION:
+
+    }
+
+    /**
+     * Starts the router to handle incoming requests.
+     * @return void
+     */
+    private function startRouter(): void
+    {
+        try {
+            $this->router->dispatch();
+        } catch (RouteNotFoundException $e) {
+            echo $e;
+        } catch (InvalidCallableException $e) {
+            echo $e;
+        }
+    }
+
+    /**
+     * Gets the database host.
+     * @return string The database host.
+     */
+    public function getHost(): string
+    {
+        return DB_HOST;
+    }
+
+    /**
+     * Gets the database name.
+     * @return string The database name.
+     */
+    public function getName(): string
+    {
+        return DB_NAME;
+    }
+
+    /**
+     * Gets the database user.
+     * @return string The database user.
+     */
+    public function getUser(): string
+    {
+        return DB_USER;
+    }
+
+    /**
+     * Gets the database password.
+     * @return string The database password.
+     */
+    public function getPass(): string
+    {
+        return DB_PASS;
+    }
 }
+
+//INFO: si on veut renvoyer une vue à l'utilisateur => route en "get"
+//INFO: si on veut traiter des données d'un formulaire => route en "post"
