@@ -9,7 +9,6 @@ use Core\Form\FormError;
 use Core\Form\FormResult;
 use Core\Session\Session;
 use Core\View\View;
-use Couchbase\User;
 use Laminas\Diactoros\ServerRequest;
 
 class AuthController extends Controller
@@ -67,8 +66,7 @@ class AuthController extends Controller
             || empty($data_form['password'])
             || empty($data_form['password_confirm'])
             || empty($data_form['lastname'])
-            || empty($data_form['firstname'])
-            || empty($data_form['phone'])) {
+            || empty($data_form['firstname'])) {
             $form_result->addError(new FormError('Veuillez remplir tous les champs'));
         } elseif ($data_form['password'] !== $data_form['password_confirm']) {
             $form_result->addError(new FormError('Les mots de passe ne correspondent pas'));
@@ -84,8 +82,7 @@ class AuthController extends Controller
                 'email' => strtolower($this->validInput($data_form['email'])),
                 'password' => password_hash($this->validInput($data_form['password']), PASSWORD_BCRYPT),
                 'lastname' => $this->validInput($data_form['lastname']),
-                'firstname' => $this->validInput($data_form['firstname']),
-                'phone' => $this->validInput($data_form['phone'])
+                'firstname' => $this->validInput($data_form['firstname'])
             ];
 
             // Add the user to the database
@@ -96,7 +93,7 @@ class AuthController extends Controller
         if ($form_result->hasErrors()) {
             // If there are errors, save them in the session and redirect to the registration form
             Session::set(Session::FORM_RESULT, $form_result);
-            self::redirect('/inscription');
+            self::redirect('/register-form');
         }
 
         // Clear the password for security reasons and save the user in the session
@@ -141,13 +138,77 @@ class AuthController extends Controller
         if ($form_result->hasErrors()) {
             // If there are errors, save them in the session and redirect to the login form
             Session::set(Session::FORM_RESULT, $form_result);
-            self::redirect('/connexion');
+            self::redirect('/login-form');
         }
 
         // Clear the password for security reasons and save the user in the session
         $user->password = '';
         Session::set(Session::USER, $user);
         Session::remove(Session::FORM_RESULT);
+        self::redirect('/');
+    }
+
+    /**
+     * Validates the email format.
+     * @param string $email The email to validate.
+     * @return bool True if the email is valid, false otherwise.
+     */
+    public function validEmail(string $email): bool
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    /**
+     * Validates the password strength.
+     * @param string $password The password to validate.
+     * @return bool True if the password is strong, false otherwise.
+     */
+    public function validPassword(string $password): bool
+    {
+        return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $password);
+    }
+
+    /**
+     * Checks if a user exists by email.
+     * @param string $email The email to check.
+     * @return bool True if the user exists, false otherwise.
+     */
+    public function userExist(string $email): bool
+    {
+        $user = AppRepoManager::getRm()->getUserRepository()->findUserByEmail($email);
+        return !is_null($user);
+    }
+
+    /**
+     * Sanitizes input data.
+     * @param string $data The data to sanitize.
+     * @return string The sanitized data.
+     */
+    public function validInput(string $data): string
+    {
+        $data = trim($data);
+        $data = strip_tags($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    /**
+     * Checks if a user is authenticated.
+     * @return bool True if the user is authenticated, false otherwise.
+     */
+    public static function isAuth(): bool
+    {
+        return !is_null(Session::get(Session::USER));
+    }
+
+    /**
+     * Logs out the user.
+     * @return void
+     */
+    public function logout(): void
+    {
+        Session::remove(Session::USER);
         self::redirect('/');
     }
 

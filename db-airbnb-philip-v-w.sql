@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `reservation`
     `date_end`     DATE    NOT NULL,
     `nb_adults`    INT(11),
     `nb_children`  INT(11),
-    `price_total`  FLOAT   NOT NULL,
+    `price_total`  INT     NOT NULL,
     `residence_id` INT(11),
     `user_id`      INT(11),
     FOREIGN KEY (`residence_id`) REFERENCES `residence` (`id`),

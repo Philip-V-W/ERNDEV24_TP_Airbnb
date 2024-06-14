@@ -4,61 +4,66 @@ namespace Core\View;
 
 use App\Controller\AuthController;
 
+// This class is responsible for rendering views.
 class View
 {
-  //on doit définir le chemin absolu vers le dossier views
-  public const PATH_VIEW = PATH_ROOT . 'views' . DS;
-  //on crée une seconde constante pour aller dans le dossier _templates
-  public const PATH_PARTIALS = self::PATH_VIEW . '_templates' . DS;
-  //on déclare un titre par défaut
-  public string $title = 'Papa Pizza';
+    // Define constants for paths to views and partial templates
+    public const PATH_VIEW = PATH_ROOT . 'views' . DS;
+    public const PATH_PARTIALS = self::PATH_VIEW . '_templates' . DS;
 
-  //on déclare un constructeur
-  public function __construct(private string $name, private bool $is_complete = true)
-  {
-  }
+    // Default title for the view
+    public string $title = 'TP Airbnb';
 
-  //méthode pour récupérer le chemin de la vue
-  // 'home/home'
-  private function getRequirePath(): string
-  {
-    //on va explode le nom de la vue pour récupérer le dossier et le fichier
-    $arr_name = explode('/', $this->name);
-    //on récupère le premier élément
-    $category = $arr_name[0];
-    //on récupère le second élément
-    $name = $arr_name[1];
-    //si je crée un template on ajoutera un _ devant le nom du fichier
-    $name_prefix = $this->is_complete ? '' : '_';
-    //reste plus qu'a retourné le chemin complet
-    return self::PATH_VIEW . $category . DS . $name_prefix . $name . '.html.php';
-  }
+    // Constructor to initialize view name and completeness flag
+    public function __construct(private string $name, private bool $is_complete = true)
+    {
 
-  //on crée la méthode de rendu
-  public function render(?array $view_data = [])
-  {
-    //on récupère les données de l'utilisateur
-    $auth = AuthController::class;
-    //si on a des données on les extrait
-    if (!empty($view_data)) {
-      extract($view_data);
-    }
-    //mise en cache du contenu de la vue
-    ob_start();
-    //on import le template _header.html.php si la vue est complète
-    if($this->is_complete){
-      require self::PATH_PARTIALS . '_header.html.php';
     }
 
-    //on import la vue
-    require_once $this->getRequirePath();
+    // Method to get the path to the required view file
+    private function getRequirePath(): string
+    {
+        // Split the view name to get category and name
+        $arr_name = explode('/', $this->name);
 
-    //on import le template _footer.html.php si la vue est complète
-    if($this->is_complete){
-      require self::PATH_PARTIALS . '_footer.html.php';
+        $category = $arr_name[0];
+        $name = $arr_name[1];
+
+        // Prefix view name with an underscore if it's not a complete view
+        $name_prefix = $this->is_complete ? '' : '_';
+
+        // Return the full path to the view file
+        return self::PATH_VIEW . $category . DS . $name_prefix . $name . '.html.php';
     }
 
-    //on libère le cache
-    ob_end_flush();
-  }
+    // Method to render the view
+    public function render(?array $view_data = [])
+    {
+        // Alias for AuthController class
+        $auth = AuthController::class;
+
+        // Extract view data variables if provided
+        if (!empty($view_data)) {
+            extract($view_data);
+        }
+
+        // Start output buffering
+        ob_start();
+
+        // Include header partial if the view is complete
+        if ($this->is_complete) {
+            require self::PATH_PARTIALS . '_header.html.php';
+        }
+
+        // Include the main view file
+        require_once $this->getRequirePath();
+
+        // Include footer partial if the view is complete
+        if ($this->is_complete) {
+            require self::PATH_PARTIALS . '_footer.html.php';
+        }
+
+        // Flush the output buffe
+        ob_end_flush();
+    }
 }
