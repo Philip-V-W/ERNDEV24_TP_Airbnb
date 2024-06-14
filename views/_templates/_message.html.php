@@ -1,4 +1,4 @@
-<!-- si j'ai un message d'erreur on l'affiche -->
+<!-- Display error message -->
 <?php use Core\Session\Session;
 
 if ($form_result && $form_result->hasErrors()) : ?>
@@ -16,7 +16,8 @@ if ($form_result && $form_result->hasErrors()) : ?>
         }, 3000);
     </script>
 <?php endif ?>
-<!-- si j'ai un message de success on l'affiche -->
+
+<!-- Display success message -->
 <?php if ($form_success && $form_success->hasSuccess()) : ?>
     <div class="alert alert-success" role="alert">
         <?= $form_success->getSuccessMessage()->getMessage() ?>

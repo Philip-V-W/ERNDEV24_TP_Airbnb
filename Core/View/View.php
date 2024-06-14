@@ -63,7 +63,7 @@ class View
             require self::PATH_PARTIALS . '_footer.html.php';
         }
 
-        // Flush the output buffe
+        // Flush the output buffer
         ob_end_flush();
     }
 }
