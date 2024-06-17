@@ -1,27 +1,334 @@
-<div class="sticky_menu">
-    <div class="container">
-        <div class="logo2">
-            <a href="/">
-                <svg width="102" height="32" fill="currentcolor" style="display: block">
+<!-- Header -->
+<div class="d-flex container py-3 ">
+    <div class="logo d-none d-lg-block">
+        <a href="index.html"><img src="assets/logo-pink.png" alt="logo"></a>
+    </div>
+    <!-- search bar top -->
+    <div class="container-fluid d-flex align-items-baseline ">
+        <div class="container-fluid " id="spostaDiv">
+            <div>
+                <button>
+                    <p>
+                        Stays
+                    </p>
+                </button>
+            </div>
+            <div>
+                <button>
+                    <p>
+                        Experiences
+                    </p>
+                </button>
+            </div>
+            <div>
+                <button>
+                    <p>
+                        Online Experiences
+                    </p>
+                </button>
+            </div>
+        </div>
+
+        <div class="user d-none d-lg-flex align-items-center">
+            <div style="width: 130px;">
+                <p>Airbnb your home</p>
+            </div>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-globe" viewBox="0 0 16 16">
                     <path
-                            d="M29.24 22.68c-.16-.39-.31-.8-.47-1.15l-.74-1.67-.03-.03c-2.2-4.8-4.55-9.68-7.04-14.48l-.1-.2c-.25-.47-.5-.99-.76-1.47-.32-.57-.63-1.18-1.14-1.76a5.3 5.3 0 00-8.2 0c-.47.58-.82 1.19-1.14 1.76-.25.52-.5 1.03-.76 1.5l-.1.2c-2.45 4.8-4.84 9.68-7.04 14.48l-.06.06c-.22.52-.48 1.06-.73 1.64-.16.35-.32.73-.48 1.15a6.8 6.8 0 007.2 9.23 8.38 8.38 0 003.18-1.1c1.3-.73 2.55-1.79 3.95-3.32 1.4 1.53 2.68 2.59 3.95 3.33A8.38 8.38 0 0022.75 32a6.79 6.79 0 006.75-5.83 5.94 5.94 0 00-.26-3.5zm-14.36 1.66c-1.72-2.2-2.84-4.22-3.22-5.95a5.2 5.2 0 01-.1-1.96c.07-.51.26-.96.52-1.34.6-.87 1.65-1.41 2.8-1.41a3.3 3.3 0 012.8 1.4c.26.4.45.84.51 1.35.1.58.06 1.25-.1 1.96-.38 1.7-1.5 3.74-3.21 5.95zm12.74 1.48a4.76 4.76 0 01-2.9 3.75c-.76.32-1.6.41-2.42.32-.8-.1-1.6-.36-2.42-.84a15.64 15.64 0 01-3.63-3.1c2.1-2.6 3.37-4.97 3.85-7.08.23-1 .26-1.9.16-2.73a5.53 5.53 0 00-.86-2.2 5.36 5.36 0 00-4.49-2.28c-1.85 0-3.5.86-4.5 2.27a5.18 5.18 0 00-.85 2.21c-.13.84-.1 1.77.16 2.73.48 2.11 1.78 4.51 3.85 7.1a14.33 14.33 0 01-3.63 3.12c-.83.48-1.62.73-2.42.83a4.76 4.76 0 01-5.32-4.07c-.1-.8-.03-1.6.29-2.5.1-.32.25-.64.41-1.02.22-.52.48-1.06.73-1.6l.04-.07c2.16-4.77 4.52-9.64 6.97-14.41l.1-.2c.25-.48.5-.99.76-1.47.26-.51.54-1 .9-1.4a3.32 3.32 0 015.09 0c.35.4.64.89.9 1.4.25.48.5 1 .76 1.47l.1.2c2.44 4.77 4.8 9.64 7 14.41l.03.03c.26.52.48 1.1.73 1.6.16.39.32.7.42 1.03.19.9.29 1.7.19 2.5zM41.54 24.12a5.02 5.02 0 01-3.95-1.83 6.55 6.55 0 01-1.6-4.48 6.96 6.96 0 011.66-4.58 5.3 5.3 0 014.08-1.86 4.3 4.3 0 013.7 1.92l.1-1.57h2.92V23.8h-2.93l-.1-1.76a4.52 4.52 0 01-3.88 2.08zm.76-2.88c.58 0 1.09-.16 1.57-.45.44-.32.8-.74 1.08-1.25.25-.51.38-1.12.38-1.8a3.42 3.42 0 00-1.47-3.04 2.95 2.95 0 00-3.12 0c-.44.32-.8.74-1.08 1.25a4.01 4.01 0 00-.38 1.8 3.42 3.42 0 001.47 3.04c.47.29.98.45 1.55.45zM53.45 8.46c0 .35-.06.67-.22.93-.16.25-.38.48-.67.64-.29.16-.6.22-.92.22-.32 0-.64-.06-.93-.22a1.84 1.84 0 01-.67-.64 1.82 1.82 0 01-.22-.93c0-.36.07-.68.22-.93.16-.3.39-.48.67-.64.29-.16.6-.23.93-.23a1.84 1.84 0 011.6.86 2 2 0 01.21.94zm-3.4 15.3V11.7h3.18v12.08h-3.19zm11.68-8.9v.04c-.15-.07-.35-.1-.5-.13-.2-.04-.36-.04-.55-.04-.89 0-1.56.26-2 .8-.48.55-.7 1.32-.7 2.31v5.93h-3.19V11.69h2.93l.1 1.83c.32-.64.7-1.12 1.24-1.48a3.1 3.1 0 011.81-.5c.23 0 .45.02.64.06.1.03.16.03.22.06v3.2zm1.28 8.9V6.74h3.18v6.5c.45-.58.96-1.03 1.6-1.38a5.02 5.02 0 016.08 1.31 6.55 6.55 0 011.6 4.49 6.96 6.96 0 01-1.66 4.58 5.3 5.3 0 01-4.08 1.86 4.3 4.3 0 01-3.7-1.92l-.1 1.57-2.92.03zm6.15-2.52c.57 0 1.08-.16 1.56-.45.44-.32.8-.74 1.08-1.25.26-.51.38-1.12.38-1.8 0-.67-.12-1.28-.38-1.79a3.75 3.75 0 00-1.08-1.25 2.95 2.95 0 00-3.12 0c-.45.32-.8.74-1.09 1.25a4.01 4.01 0 00-.38 1.8 3.42 3.42 0 001.47 3.04c.47.29.98.45 1.56.45zm7.51 2.53V11.69h2.93l.1 1.57a3.96 3.96 0 013.54-1.89 4.1 4.1 0 013.82 2.44c.35.76.54 1.7.54 2.75v7.24h-3.19v-6.82c0-.84-.19-1.5-.57-1.99-.38-.48-.9-.74-1.56-.74-.48 0-.9.1-1.27.32-.35.23-.64.52-.86.93a2.7 2.7 0 00-.32 1.35v6.92h-3.16zm12.52 0V6.73h3.19v6.5a4.67 4.67 0 013.73-1.89 5.02 5.02 0 013.95 1.83 6.57 6.57 0 011.59 4.48 6.95 6.95 0 01-1.66 4.58 5.3 5.3 0 01-4.08 1.86 4.3 4.3 0 01-3.7-1.92l-.09 1.57-2.93.03zm6.18-2.53c.58 0 1.09-.16 1.56-.45.45-.32.8-.74 1.09-1.25.25-.51.38-1.12.38-1.8a3.42 3.42 0 00-1.47-3.04 2.95 2.95 0 00-3.12 0c-.44.32-.8.74-1.08 1.25a3.63 3.63 0 00-.38 1.8 3.42 3.42 0 001.47 3.04c.47.29.95.45 1.55.45z">
-                    </path>
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
                 </svg>
-            </a>
+            </div>
         </div>
-        <div class="input2">
-            <input type="text" placeholder="Start your search"/>
-            <i class="icon-search"></i>
-        </div>
-        <div class="profile2">
-            <a href="">Become a Host</a>
-            <a href="">
-                <i class="icon-country"></i>
-            </a>
-            <a href="" class="active_profile">
-                <i class="icon-menu"></i>
-                <i class="icon-user"></i>
-            </a>
+
+        <div class="btn-group">
+            <button type="button" class="btn" data-bs-toggle="dropdown" data-bs-offset="1,10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                    <path fill-rule="evenodd"
+                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end z-i">
+                <!-- si je suis en session j'affiche mon compte -->
+                <?php
+
+                use Core\Session\Session;
+                use App\Controller\ReservationController;
+
+                if ($auth::isAuth()) $user_id = Session::get(Session::USER)->id;
+
+                if ($auth::isAuth()) : ?>
+                    <li>
+                        <a class="dropdown-item" role="button" href="/register-form"><b>Sign up</b></a>
+                    </li>
+                <?php else : ?>
+                    <li>
+                        <a class="dropdown-item" role="button" href="/login-form">Log in</a>
+                    </li>
+                <?php endif ?>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards</button>
+                </li>
+                <li>
+                    <button class="dropdown-item" type="button">Airbnb your home</button>
+                </li>
+                <li>
+                    <button class="dropdown-item" type="button">Help center</button>
+                </li>
+                <hr class="dropdown-divider">
+                <div class="container-fluid rsp">
+                    <form class="d-flex f-w" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#FF385C"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </ul>
         </div>
     </div>
 </div>
+<!-- search bar -->
+<div class="d-flex justify-content-center" style="margin-bottom: 1%;">
+    <div class="bar-container">
+        <div>
+            <button>
+                <div>
+                    <p>Where</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search destinations" style="padding: 0 !important;">
+                </div>
+            </button>
+        </div>
+        <div>
+            <button>
+                <div>
+                    <p>Check-in</p>
+                </div>
+                <div>
+                    <p>Add dates</p>
+                </div>
+            </button>
+        </div>
+        <div>
+            <button>
+                <div>
+                    <p>Check-out</p>
+                </div>
+                <div>
+                    <p>Add dates</p>
+                </div>
+            </button>
+        </div>
+        <div class="d-flex ">
+            <button>
+                <div>
+                    <div>
+                        <p>Who</p>
+                    </div>
+                    <div>
+                        <p>Add guests</p>
+                    </div>
+            </button>
+            <div style="background-color: #FF385C; width: 43px;">
+                <button style="padding-top: 20%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="white"
+                         class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Icons Carousel-->
+<nav class="container-fluid px-5 sticky-top ">
+    <div id="iconsCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active ">
+                <div class="container">
+                    <div class="row">
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        local_activity
+                                    </span>
+                            <p>Icon</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        landscape
+                                    </span>
+                            <p>Countryside</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        pool
+                                    </span>
+                            <p>Pool</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        rocket
+                                    </span>
+                            <p>Wow</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        piano
+                                    </span>
+                            <p>Piano</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        nature
+                                    </span>
+                            <p>Park</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        castle
+                                    </span>
+                            <p>Castle</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        sailing
+                                    </span>
+                            <p>Boats</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        coffee
+                                    </span>
+                            <p>B&B</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        kayaking
+                                    </span>
+                            <p>Lake</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        sports_golf
+                                    </span>
+                            <p>Golf</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        downhill_skiing
+                                    </span>
+                            <p>Skiing</p>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        key
+                                    </span>
+                            <p>New</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        ac_unit
+                                    </span>
+                            <p>North Pole</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        local_fire_department
+                                    </span>
+                            <p>Trending</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        cabin
+                                    </span>
+                            <p>Cabins</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        surfing
+                                    </span>
+                            <p>Surf</p>
+                        </div>
+                        <div class="icon col-1 d-none d-lg-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        beach_access
+                                    </span>
+                            <p>Beach</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        self_improvement
+                                    </span>
+                            <p>Relax</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        location_city
+                                    </span>
+                            <p>City</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        local_dining
+                                    </span>
+                            <p>Kitchen</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        landscape_2
+                                    </span>
+                            <p>Mountain</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        attractions
+                                    </span>
+                            <p>Attractions</p>
+                        </div>
+                        <div class="icon col-2 col-lg-1 d-flex flex-column align-items-center">
+                                    <span class="material-symbols-outlined">
+                                        festival
+                                    </span>
+                            <p>Festival</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#iconsCarousel" data-bs-slide="prev">
+        <img src="assets/icons/left.png" alt="">
+    </button>
+    <!-- Pulsante successivo -->
+    <button class="carousel-control-next" type="button" data-bs-target="#iconsCarousel" data-bs-slide="next">
+        <img src="assets/icons/right.png" alt="">
+    </button>
+</nav>

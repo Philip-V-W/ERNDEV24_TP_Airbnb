@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Controller\AuthController;
+use App\Controller\ReservationController;
 use App\Controller\ResidenceController;
+use App\Controller\UserController;
 use Core\Database\DatabaseConfigInterface;
 use MiladRahimi\PhpRouter\Exceptions\InvalidCallableException;
 use MiladRahimi\PhpRouter\Exceptions\RouteNotFoundException;
@@ -77,6 +79,9 @@ class App implements DatabaseConfigInterface
 
         // RESIDENCE SECTION:
         $this->router->get('/', [ResidenceController::class, 'home']);
+        $this->router->get('/results', [ResidenceController::class, 'results']);
+        $this->router->get('/rooms', [ResidenceController::class, 'rooms']);
+        $this->router->get('/test', [ResidenceController::class, 'test']);
 
         // CART SECTION:
 

@@ -30,7 +30,7 @@ class UserRepository extends Repository
         $data = array_merge($data, $data_more);
 
         // SQL query to insert a new user
-        $query = sprintf('INSERT INTO `%s` (`email`, `password`, `lastname`, `firstname`, `is_active`) 
+        $query = sprintf('INSERT INTO %s (`email`, `password`, `lastname`, `firstname`, `is_active`) 
         VALUES (:email, :password, :lastname, :firstname, :is_active)',
             $this->getTableName());
 
@@ -58,7 +58,7 @@ class UserRepository extends Repository
     public function findUserByEmail(string $email): ?User
     {
         // SQL query to find a user by email
-        $q = sprintf('SELECT * FROM `%s` WHERE `email` = :email', $this->getTableName());
+        $q = sprintf('SELECT * FROM %s WHERE `email` = :email', $this->getTableName());
 
         // Prepare the SQL query
         $stmt = $this->pdo->prepare($q);
