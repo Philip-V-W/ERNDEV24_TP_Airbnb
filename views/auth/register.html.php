@@ -4,7 +4,7 @@ if($auth::isAuth()) $auth::redirect('/');
 ?>
 
 <main class="container-form">
-    <h1>Je crée mon compte</h1>
+    <h1>Create an account</h1>
 
     <!-- Display error messages if the form has errors -->
     <?php if ($form_result && $form_result->hasErrors()): ?>
@@ -17,34 +17,38 @@ if($auth::isAuth()) $auth::redirect('/');
     <!-- Registration form -->
     <form class="auth-form" action="/register" method="POST">
         <div class="box-auth-input">
-            <label class="detail-description">Adresse Email</label>
+            <label class="detail-description">Email address</label>
             <!-- Input for email address -->
             <input type="email" class="form-control" name="email">
         </div>
         <div class="box-auth-input">
-            <label class="detail-description">Mot de passe</label>
+            <label class="detail-description">Password</label>
             <!-- Input for password -->
             <input type="password" class="form-control" name="password">
         </div>
         <div class="box-auth-input">
-            <label class="detail-description">Confirmation</label>
+            <label class="detail-description">Confirm password</label>
             <!-- Input for password confirmation -->
             <input type="password" class="form-control" name="password_confirm">
         </div>
         <div class="box-auth-input">
-            <label class="detail-description">Votre nom</label>
+            <label class="detail-description">Lastname</label>
             <!-- Input for last name -->
-            <input type="text" class="form-control" name="lastname">
+            <input type="" class="form-control" name="lastname">
         </div>
         <div class="box-auth-input">
-            <label class="detail-description">Votre prénom</label>
+            <label class="detail-description">Firstname</label>
             <!-- Input for first name -->
-            <input type="text" class="form-control" name="firstname">
+            <input type="" class="form-control" name="firstname">
+        </div>
+        <div class="box-auth-input">
+            <label class="detail-description">Phone number</label>
+            <input type="" class="form-control" name="phone">
         </div>
         <!-- Submit button -->
-        <button type="submit" class="call-action">Je m'inscrit</button>
+        <button type="submit" class="call-action">Sign up</button>
     </form>
 
     <!-- Link to login page for users with an existing account -->
-    <p class="header-description">J'ai déja un compte, <a class="auth-link" href="/login-form">Je me connecte</a></p>
+    <p class="header-description">I already have an account, <a class="auth-link" href="/login-form">Log in</a></p>
 </main>

@@ -2,10 +2,10 @@
 CREATE TABLE IF NOT EXISTS `address`
 (
     `id`       INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `address`  VARCHAR(255),
-    `zip_code` VARCHAR(255),
-    `country`  VARCHAR(255),
-    `phone`    VARCHAR(255)
+    `address`  VARCHAR(255) NOT NULL,
+    `city`     VARCHAR(255) NOT NULL,
+    `zip_code` VARCHAR(255) NOT NULL,
+    `country`  VARCHAR(255) NOT NULL
 );
 
 -- table user
@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `user`
     `password`   VARCHAR(255) NOT NULL,
     `lastname`   VARCHAR(255) NOT NULL,
     `firstname`  VARCHAR(255) NOT NULL,
+    `phone`    VARCHAR(255) NOT NULL,
     `is_active`  BOOLEAN      NOT NULL DEFAULT 1,
     `address_id` INT(11),
     FOREIGN KEY (`address_id`) REFERENCES `address` (`id`)
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `residence`
     `nb_rooms`        INT(11),
     `nb_beds`         INT(11),
     `nb_baths`        INT(11),
-    `nb_travelers`    INT(11),
+    `nb_guests`       INT(11),
     `is_active`       BOOLEAN      NOT NULL DEFAULT 1,
     `type_id`         INT(11),
     `user_id`         INT(11),

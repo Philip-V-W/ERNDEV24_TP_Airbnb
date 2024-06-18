@@ -7,4 +7,5 @@ use Core\Controller\Controller;
 class UserController extends Controller
 {
 
+
 }

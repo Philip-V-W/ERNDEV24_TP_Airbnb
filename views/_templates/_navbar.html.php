@@ -1,7 +1,7 @@
 <!-- Header -->
 <div class="d-flex container py-3 ">
     <div class="logo d-none d-lg-block">
-        <a href="index.html"><img src="assets/logo-pink.png" alt="logo"></a>
+        <a href="/"><img src="assets/logo-pink.png" alt="logo"></a>
     </div>
     <!-- search bar top -->
     <div class="container-fluid d-flex align-items-baseline ">
@@ -31,13 +31,15 @@
 
         <div class="user d-none d-lg-flex align-items-center">
             <div style="width: 130px;">
+                <button>
                 <p>Airbnb your home</p>
+                </button>
             </div>
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                      class="bi bi-globe" viewBox="0 0 16 16">
                     <path
-                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
+                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
                 </svg>
             </div>
         </div>
@@ -68,35 +70,72 @@
 
                 if ($auth::isAuth()) : ?>
                     <li>
-                        <a class="dropdown-item" role="button" href="/register-form"><b>Sign up</b></a>
+                        <button class="dropdown-item" type="button"><strong>Messages</strong></button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button"><strong>Notifications</strong></button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button"><strong>Trips</strong></button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button"><strong>Wishlists</strong></button>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" type="button" href="/residence">Airbnb your home</a>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button">Refer a Host</button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button">Account</button>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button">Help center</button>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" role="button" href="/logout">Log out</a>
                     </li>
                 <?php else : ?>
                     <li>
+                        <a class="dropdown-item" role="button" href="/register-form"><strong>Sign up</strong></a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" role="button" href="/login-form">Log in</a>
                     </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button">Airbnb your home</button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" type="button">Help center</button>
+                    </li>
                 <?php endif ?>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards</button>
-                </li>
-                <li>
-                    <button class="dropdown-item" type="button">Airbnb your home</button>
-                </li>
-                <li>
-                    <button class="dropdown-item" type="button">Help center</button>
-                </li>
-                <hr class="dropdown-divider">
                 <div class="container-fluid rsp">
                     <form class="d-flex f-w" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">
                             <svg
-                                xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#FF385C"
-                                class="bi bi-search" viewBox="0 0 16 16">
+                                    xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#FF385C"
+                                    class="bi bi-search" viewBox="0 0 16 16">
                                 <path
-                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
                         </button>
                     </form>
@@ -153,7 +192,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="white"
                          class="bi bi-search" viewBox="0 0 16 16">
                         <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                     </svg>
                 </button>
             </div>

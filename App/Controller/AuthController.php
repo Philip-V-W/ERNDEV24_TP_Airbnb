@@ -66,27 +66,31 @@ class AuthController extends Controller
             || empty($data_form['password'])
             || empty($data_form['password_confirm'])
             || empty($data_form['lastname'])
-            || empty($data_form['firstname'])) {
-            $form_result->addError(new FormError('Veuillez remplir tous les champs'));
+            || empty($data_form['firstname'])
+            || empty($data_form['phone'])) {
+            $form_result->addError(new FormError('Please fill in all fields'));
         } elseif ($data_form['password'] !== $data_form['password_confirm']) {
-            $form_result->addError(new FormError('Les mots de passe ne correspondent pas'));
+            $form_result->addError(new FormError('Passwords do not match'));
         } elseif (!$this->validEmail($data_form['email'])) {
-            $form_result->addError(new FormError('L\'email n\'est pas valide'));
+            $form_result->addError(new FormError('The email is not valid'));
         } elseif (!$this->validPassword($data_form['password'])) {
-            $form_result->addError(new FormError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre'));
+            $form_result->addError(new FormError('The password is not strong enough'));
         } elseif ($this->userExist($data_form['email'])) {
-            $form_result->addError(new FormError('Cet utilisateur existe déjà'));
+            $form_result->addError(new FormError('This email is already registered'));
+        } elseif (strlen($data_form['phone']) < 10) {
+            $form_result->addError(new FormError('The phone number is not long enough'));
         } else {
             // Prepare user data for insertion
             $data_user = [
                 'email' => strtolower($this->validInput($data_form['email'])),
                 'password' => password_hash($this->validInput($data_form['password']), PASSWORD_BCRYPT),
                 'lastname' => $this->validInput($data_form['lastname']),
-                'firstname' => $this->validInput($data_form['firstname'])
+                'firstname' => $this->validInput($data_form['firstname']),
+                'phone' => $this->validInput($data_form['phone'])
             ];
 
             // Add the user to the database
-            AppRepoManager::getRm()->getUserRepository()->addUser($data_user);
+            $user = AppRepoManager::getRm()->getUserRepository()->addUser($data_user);
         }
 
         // Handle form result
@@ -208,8 +212,9 @@ class AuthController extends Controller
      */
     public function logout(): void
     {
+        // Remove the user from the session
         Session::remove(Session::USER);
+        // Redirect to the home page
         self::redirect('/');
     }
-
 }

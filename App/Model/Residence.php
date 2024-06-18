@@ -12,7 +12,7 @@ class Residence extends Model
     public ?int $nb_rooms;
     public ?int $nb_beds;
     public ?int $nb_baths;
-    public ?int $nb_travelers;
+    public ?int $nb_guests;
     public bool $is_active;
     public ?int $type_id;
     public ?int $user_id;

@@ -27,8 +27,8 @@ class AddressRepository extends Repository
         // on delare un tableau vide
         $data = [];
 
-        $query = sprintf('INSERT INTO %s (`address`, `zip_code`, `country`, `phone`)
-                             VALUES (:address, :zip_code, :country, :phone)',
+        $query = sprintf('INSERT INTO %s (`address`, `city`, `zip_code`, `country`)
+                             VALUES (:address, :city, :zip_code, :country)',
             $this->getTableName()
         );
 
