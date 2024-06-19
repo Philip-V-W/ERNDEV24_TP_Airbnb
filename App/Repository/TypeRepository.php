@@ -16,30 +16,16 @@ class TypeRepository extends Repository
         return 'type';
     }
 
-    /**
-     * Function that adds a new type to the database.
-     * @param array $data The data of the address to add.
-     * @return ?int The ID of the added address or null if the operation fails.
-     */
-    public function insertType(array $data): ?int
+
+    public function getTypeIdByLabel(string $label): ?int
     {
-        // SQL query to insert a new address
-        $q = sprintf('INSERT INTO `%s` (`label`, `image_path`, `is_active`)
-            VALUES (:label, :image_path, :is_active)',
-            $this->getTableName()
-        );
-
-
-        // Prepare the SQL query
+        $q = sprintf('SELECT `id` FROM `%s` WHERE `label` = :label', $this->getTableName());
         $stmt = $this->pdo->prepare($q);
-
-        // Return null if statement preparation fails
         if (!$stmt) return null;
 
-        // Execute the statement with the address data
-        $stmt->execute($data);
+        $stmt->execute(['label' => $label]);
+        $result = $stmt->fetch();
 
-        // Get the last inserted ID
-        return $this->pdo->lastInsertId();
+        return $result ? (int)$result['id'] : null;
     }
 }

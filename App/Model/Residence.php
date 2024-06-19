@@ -9,6 +9,7 @@ class Residence extends Model
     public string $title;
     public ?string $description;
     public string $price_per_night;
+    public ?int $size;
     public ?int $nb_rooms;
     public ?int $nb_beds;
     public ?int $nb_baths;

@@ -88,7 +88,7 @@ class App implements DatabaseConfigInterface
 
 
         // USER SECTION:
-        $this->router->post('/add-residence-form', [ResidenceController::class, 'addResidenceForm']);
+        $this->router->post('/addResidenceForm', [ResidenceController::class, 'addResidenceForm']);
         $this->router->get('/user/add-home/{id}', [UserController::class, 'addHome']);
 
     }

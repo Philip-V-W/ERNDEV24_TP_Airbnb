@@ -55,10 +55,14 @@ class ResidenceController extends Controller
      */
     public function residence(): void
     {
+        $view_data = [
+            'form_result' => Session::get(Session::FORM_RESULT),
+            'form_success' => Session::get(Session::FORM_SUCCESS)
+        ];
         // Create a new view for the home page
         $view = new View('home/residence');
         // Render the view
-        $view->render();
+        $view->render($view_data);
     }
 
     /**
@@ -69,101 +73,123 @@ class ResidenceController extends Controller
     public function addResidenceForm(ServerRequest $request): void
     {
         $data_form = $request->getParsedBody();
+//        var_dump($data_form);die;
         $form_result = new FormResult();
 
-        // We retrieve the data from the form
-        // Residence data
+        // Retrieve the data from the form
         $title = $data_form['title'] ?? '';
         $description = $data_form['description'] ?? '';
         $price_per_night = $data_form['price'] ?? '';
+        $size = $data_form['size'] ?? '';
         $nb_rooms = $data_form['rooms'] ?? '';
         $nb_beds = $data_form['bedrooms'] ?? '';
         $nb_baths = $data_form['bathrooms'] ?? '';
         $nb_guests = $data_form['guests'] ?? '';
         $user_id = $data_form['user_id'] ?? '';
-        $type_id = $data_form['type_id'] ?? '';
-        $address_id = $data_form['address_id'] ?? '';
-        // Type data
         $label = $data_form['type'] ?? '';
-        // Address data
         $address = $data_form['address'] ?? '';
         $city = $data_form['city'] ?? '';
         $zip_code = $data_form['zip'] ?? '';
         $country = $data_form['country'] ?? '';
+        $equipment_ids = $data_form['equipment'] ?? [];
 
-        // We check if the fields are empty
+        // Check if the fields are empty
         if (empty($title)
             || empty($description)
             || empty($price_per_night)
+            || empty($size)
             || empty($nb_rooms)
             || empty($nb_beds)
             || empty($nb_baths)
             || empty($nb_guests)
             || empty($user_id)
-            || empty($type_id)
-            || empty($address_id)
             || empty($label)
             || empty($address)
             || empty($city)
             || empty($zip_code)
-            || empty($country)) {
+            || empty($country)
+            || empty($equipment_ids)) {
             $form_result->addError(new FormError('Veuillez remplir tous les champs'));
         } else {
-            // We check if the residence already exists
-            $residence_data = [
-                'title' => $title,
-                'description' => $description,
-                'price_per_night' => $price_per_night,
-                'nb_rooms' => $nb_rooms,
-                'nb_beds' => $nb_beds,
-                'nb_baths' => $nb_baths,
-                'nb_guests' => $nb_guests,
-                'user_id' => $user_id,
-                'type_id' => $type_id,
-                'address_id' => $address_id,
-                'is_active' => 1
-            ];
+            // Fetch the existing type ID from the database
+            $type_id = AppRepoManager::getRm()->getTypeRepository()->getTypeIdByLabel($label);
 
-            $residence_id = AppRepoManager::getRm()->getResidenceRepository()->insertResidence($residence_data);
-            if (is_null($residence_id)) {
-                $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout de la résidence'));
+            if (is_null($type_id)) {
+                $form_result->addError(new FormError('Type invalide sélectionné'));
             } else {
-                // We build a data array to insert the type
-                $type_data = [
-                    'label' => $label
+                // Validate the equipment
+                $valid_equipment_ids = AppRepoManager::getRm()->getEquipmentRepository()->getAllEquipmentIds();
+                foreach ($equipment_ids as $equipment_id) {
+                    if (!in_array($equipment_id, $valid_equipment_ids)) {
+                        $form_result->addError(new FormError('Équipement invalide sélectionné'));
+                        return;
+                    }
+                }
+
+                // Build a data array to insert the address
+                $address_data = [
+                    'address' => $address,
+                    'city' => $city,
+                    'zip_code' => $zip_code,
+                    'country' => $country
                 ];
 
-                $residence_type = AppRepoManager::getRm()->getTypeRepository()->insertType($type_data);
-                if (!$residence_type) {
-                    $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout du type'));
+                // Insert the address and get the address ID
+                $address_id = AppRepoManager::getRm()->getAddressRepository()->insertAddress($address_data);
+
+                if (is_null($address_id)) {
+                    $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout de l\'adresse'));
                 } else {
-                    // We build a data array to insert the address
-                    $address_data = [
-                        'address' => $address,
-                        'city' => $city,
-                        'zip_code' => $zip_code,
-                        'country' => $country
+                    // Build a data array to insert the residence
+                    $residence_data = [
+                        'title' => $title,
+                        'description' => $description,
+                        'price_per_night' => $price_per_night,
+                        'size' => $size,
+                        'nb_rooms' => $nb_rooms,
+                        'nb_beds' => $nb_beds,
+                        'nb_baths' => $nb_baths,
+                        'nb_guests' => $nb_guests,
+                        'user_id' => $user_id,
+                        'address_id' => $address_id,
+                        'type_id' => $type_id,
+                        'is_active' => 1
                     ];
 
-                    $residence_address = AppRepoManager::getRm()->getUserRepository()->insertAddress($address_data);
-                    if (!$residence_address) {
-                        $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout de l\'adresse'));
+                    // Insert the residence and get the residence ID
+                    $residence_id = AppRepoManager::getRm()->getResidenceRepository()->insertResidence($residence_data);
+                    if (is_null($residence_id)) {
+                        $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout de la résidence'));
                     } else {
-                        $form_result->addSuccess(new FormSuccess('The residence has been successfully added'));
+                        // Insert selected equipment for the residence
+                        foreach ($equipment_ids as $equipment_id) {
+                            $equipment_data = [
+                                'residence_id' => $residence_id,
+                                'equipment_id' => $equipment_id
+                            ];
+                            AppRepoManager::getRm()->getEquipmentRepository()->insertResidenceEquipment($equipment_data);
+                        }
                     }
                 }
             }
         }
 
-        // We check if the form has errors
+
+
+
+
+
+
+
+    // We check if the form has errors
         if ($form_result->hasErrors()) {
             Session::set(Session::FORM_RESULT, $form_result);
-            self::redirect('/user/insert-residence/' . $user_id);
-        } elseif ($form_result->getSuccessMessage()) {
+            self::redirect('/residence');
+        } else{
             // If we have success messages, we put them in sessions
-            Session::remove(Session::FORM_RESULT);
-            Session::set(Session::FORM_SUCCESS, $form_result);
-            // self::redirect('/user/list-custom-pizza/' . $user_id); // TODO: Change the redirection to the residence list
+//            Session::remove(Session::FORM_RESULT);
+//            Session::set(Session::FORM_SUCCESS, $form_result);
+            self::redirect('/'); // TODO: Change the redirection to the residence list
         }
     }
 

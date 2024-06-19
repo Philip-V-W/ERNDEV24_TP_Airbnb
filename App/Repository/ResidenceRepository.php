@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\AppRepoManager;
 use Core\Repository\Repository;
 use App\Model\Residence;
 
@@ -17,31 +18,31 @@ class ResidenceRepository extends Repository
     }
 
     /**
-     * méthode qui permet d'ajouter une nouvelle pizza
-     * @param array $data
-     * @return ?int
+     * Function that adds a new residence to the database.
+     * @param array $data The data of the residence to add.
+     * @return ?int The ID of the added residence or null if the operation fails.
      */
     public function insertResidence(array $data): ?int
     {
-        //on crée la requete SQL
-        $q = sprintf(
-            'INSERT INTO `%s` (`title`, `description`, `price_per_night`, `nb_rooms`, 
-                   `nb_beds`, `nb_baths`, `nb_guests`, `is_active`, `type_id`, `user_id`, `address_id`)
-            VALUES (:title, :description, :price_per_night, :nb_rooms, 
-                    :nb_beds, :nb_baths, :nb_guests, :is_active, :type_id, :user_id, :address_id)',
+
+        // SQL query to insert a new residence
+        $q = sprintf('INSERT INTO `%s` (`title`, `description`, `price_per_night`, `size`, `nb_rooms`, 
+                             `nb_beds`, `nb_baths`, `nb_guests`, `is_active`, `type_id`, `user_id`, `address_id`) 
+                             VALUES (:title, :description, :price_per_night, :size, :nb_rooms, 
+                             :nb_beds, :nb_baths, :nb_guests, :is_active, :type_id, :user_id, :address_id)',
             $this->getTableName()
         );
 
-        //on prépare la requete
+        // Prepare the SQL query
         $stmt = $this->pdo->prepare($q);
 
-        //on vérifie que la requete est bien préparée
+        // Return null if statement preparation fails
         if (!$stmt) return null;
 
-        //on execute la requete en passant les paramètres
+        // Execute the statement with the residence data
         $stmt->execute($data);
 
-        //on retourne l'id de la pizza insérée
+        // Get the last inserted ID
         return $this->pdo->lastInsertId();
     }
 }
