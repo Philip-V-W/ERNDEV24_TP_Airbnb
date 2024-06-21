@@ -13,13 +13,10 @@ use App\Repository\TypeRepository;
 use App\Repository\UserRepository;
 use Core\Repository\RepositoryManagerTrait;
 
-//Manages repository instances for the application.
 class AppRepoManager
 {
-    // Use the RepositoryManagerTrait to manage a singleton instance of the manager
     use RepositoryManagerTrait;
 
-    // Instance of UserRepository
     private AddressRepository $addressRepository;
     private EquipmentRepository $equipmentRepository;
     private FavoriteRepository $favoriteRepository;
@@ -75,14 +72,11 @@ class AppRepoManager
         return $this->userRepository;
     }
 
-    // Protected constructor to prevent creating a new instance of the
-    // AppRepoManager via the `new` operator from outside of this class.
+    // Protected constructor to prevent creating a new instance of the AppRepoManager via the `new` operator from outside of this class.
     protected function __construct()
     {
-        // Get the application configuration
         $config = App::getApp();
 
-        // Initialize the UserRepository with the configuration
         $this->addressRepository = new AddressRepository($config);
         $this->equipmentRepository = new EquipmentRepository($config);
         $this->favoriteRepository = new FavoriteRepository($config);

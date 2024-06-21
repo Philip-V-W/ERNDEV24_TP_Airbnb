@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use Core\Repository\Repository;
 use App\Model\Type;
+use Exception;
+use PDO;
 
 class TypeRepository extends Repository
 {
@@ -16,16 +18,16 @@ class TypeRepository extends Repository
         return 'type';
     }
 
-
-    public function getTypeIdByLabel(string $label): ?int
+    public function findTypeById(int $id)
     {
-        $q = sprintf('SELECT `id` FROM `%s` WHERE `label` = :label', $this->getTableName());
-        $stmt = $this->pdo->prepare($q);
-        if (!$stmt) return null;
-
-        $stmt->execute(['label' => $label]);
-        $result = $stmt->fetch();
-
-        return $result ? (int)$result['id'] : null;
+        try {
+            $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :id");
+            $stmt->execute(['id' => $id]);
+            return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
+        } catch (Exception $e) {
+            error_log('Error finding type: ' . $e->getMessage());
+            return null;
+        }
     }
+
 }

@@ -22,5 +22,25 @@ class Residence extends Model
     public ?Type $type;
     public ?User $user;
     public ?Address $address;
-}
 
+    // Add getter methods
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getPricePerNight(): string
+    {
+        return $this->price_per_night;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+}

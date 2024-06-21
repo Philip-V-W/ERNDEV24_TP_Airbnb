@@ -74,17 +74,17 @@ foreach ($equipments as $equipment) {
             <input type="" class="form-control" name="guests">
         </div>
 
-        <select name="type" id="type">
-            <?php
-            $types = AppRepoManager::getRm()->getTypeRepository()->getAllTypes();
-            foreach ($types as $type) :
-                ?>
-                <option value="<?= htmlspecialchars($type['id']) ?>"><?= htmlspecialchars($type['label']) ?></option>
-            <?php endforeach ?>
-        </select>
-
-
-
+        <div class="box-auth-input">
+            <label class="detail-description">Type</label>
+            <select name="type_id" id="type">
+                <?php
+                $types = AppRepoManager::getRm()->getTypeRepository()->getAllTypes();
+                foreach ($types as $type) :
+                    ?>
+                    <option value="<?= htmlspecialchars($type['id']) ?>"><?= htmlspecialchars($type['label']) ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
 
         <div class="box-auth-input">
             <label class="detail-description">Address</label>

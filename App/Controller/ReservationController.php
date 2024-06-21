@@ -17,7 +17,7 @@ class ReservationController extends Controller
     /**
      * méthode qui permet de générer un numéro de commande unique
      */
-    private function generateOrderNumber()
+    private function generateOrderNumber() : string
     {
         //je veux un numero de commande du type: FACT2406_00001 par exemple
         $order_number = 1;
@@ -30,6 +30,11 @@ class ReservationController extends Controller
         return $final;
     }
 
+    /**
+     * méthode qui permet d'ajouter une commande
+     * @param ServerRequest $request
+     * @return void
+     */
     public function addOrder(ServerRequest $request)
     {
         //on receptionne les données du formulaire
@@ -406,4 +411,12 @@ class ReservationController extends Controller
             self::redirect('/user/list-order/' . $user_id);
         }
     }
+
+    public function userHasListings($userId): bool
+    {
+        $residenceRepository = AppRepoManager::getRm()->getResidenceRepository();
+        $listings = $residenceRepository->findByUserId($userId);
+        return !empty($listings);
+    }
+
 }

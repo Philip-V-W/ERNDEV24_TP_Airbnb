@@ -32,7 +32,7 @@
         <div class="user d-none d-lg-flex align-items-center">
             <div style="width: 130px;">
                 <button>
-                <p>Airbnb your home</p>
+                    <p>Airbnb your home</p>
                 </button>
             </div>
             <div>
@@ -63,10 +63,24 @@
                 <!-- si je suis en session j'affiche mon compte -->
                 <?php
 
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
+
                 use Core\Session\Session;
                 use App\Controller\ReservationController;
+                use App\Controller\AuthController;
 
-                if ($auth::isAuth()) $user_id = Session::get(Session::USER)->id;
+                $auth = new AuthController();
+                $reservationController = new ReservationController();
+                $user_id = null;
+                $userHasListings = false;
+
+                if ($auth::isAuth()) {
+                    $user_id = Session::get(Session::USER)->id;
+                    $userHasListings = $reservationController->userHasListings($user_id);
+                    error_log('User has listings: ' . ($userHasListings ? 'yes' : 'no')); // Debugging line
+                }
 
                 if ($auth::isAuth()) : ?>
                     <li>
@@ -85,7 +99,11 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item" type="button" href="/residence">Airbnb your home</a>
+                        <?php if ($userHasListings): ?>
+                            <a class="dropdown-item" type="button" href="/manage-listings">Manage listings</a>
+                        <?php else: ?>
+                            <a class="dropdown-item" type="button" href="/residence">Airbnb your home</a>
+                        <?php endif; ?>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Refer a Host</button>
@@ -97,8 +115,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards
-                        </button>
+                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards</button>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Help center</button>
@@ -117,8 +134,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards
-                        </button>
+                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards</button>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Airbnb your home</button>
@@ -126,7 +142,8 @@
                     <li>
                         <button class="dropdown-item" type="button">Help center</button>
                     </li>
-                <?php endif ?>
+                <?php endif; ?>
+
                 <div class="container-fluid rsp">
                     <form class="d-flex f-w" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

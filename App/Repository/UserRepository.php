@@ -80,21 +80,4 @@ class UserRepository extends Repository
         return $user ?? null;
     }
 
-
-    /**
-     * méthode pour afficher le formulaire de création de pizza custom
-     * @param int $id
-     * @return void
-     */
-    public function addHome(int $id): void
-    {
-        $view_data = [
-            'form_result' => Session::get(Session::FORM_RESULT),
-            'form_success' => Session::get(Session::FORM_SUCCESS)
-        ];
-
-        $view = new View('user/addHome');
-
-        $view->render($view_data);
-    }
 }

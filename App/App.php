@@ -77,20 +77,18 @@ class App implements DatabaseConfigInterface
         $this->router->post('/register', [AuthController::class, 'register']);
         $this->router->get('/logout', [AuthController::class, 'logout']);
 
-
         // RESIDENCE SECTION:
         $this->router->get('/', [ResidenceController::class, 'home']);
         $this->router->get('/results', [ResidenceController::class, 'results']);
         $this->router->get('/rooms', [ResidenceController::class, 'rooms']);
         $this->router->get('/residence', [ResidenceController::class, 'residence']);
-
-        // CART SECTION:
-
+        $this->router->post('/addResidenceForm', [ResidenceController::class, 'addResidenceForm']);
 
         // USER SECTION:
-        $this->router->post('/addResidenceForm', [ResidenceController::class, 'addResidenceForm']);
-        $this->router->get('/user/add-home/{id}', [UserController::class, 'addHome']);
-
+        $this->router->get('/manage-listings', [UserController::class, 'manageListings']);
+        $this->router->get('/user/edit-residence/{id}', [UserController::class, 'editResidence']);
+        $this->router->post('/user/edit-residence/{id}', [UserController::class, 'editResidence']);
+        $this->router->post('/user/delete-residence/{id}', [UserController::class, 'deleteResidence']);
     }
 
     /**
