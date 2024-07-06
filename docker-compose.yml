@@ -1,0 +1,33 @@
+services:
+  appserver:
+    build: .
+    container_name: tp-airbnb-philip-v-w
+    volumes:
+      - .:/var/www/html
+      - .docker/php/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+    ports:
+      - "80:80"      # Change the 1st number to a different port
+      - "9003:9003"  # Change this if you are using Xdebug
+    environment:
+      PHP_IDE_CONFIG: "serverName=localhost"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # For Xdebug
+    depends_on:
+      - database
+
+  database:
+    image: mysql:5.7
+    container_name: db-airbnb-philip-v-w # Change the container name
+    ports:
+      - "3307:3306"  # Change the 1st number to a different port
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db-airbnb-philip-v-w # Change the database name
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - db-data:/var/lib/mysql
+      - .docker/mysql/db-airbnb-philip-v-w.sql:/docker-entrypoint-initdb.d/db-airbnb-philip-v-w.sql # Change the database name (located in the .docker/mysql folder)
+
+volumes:
+  db-data:

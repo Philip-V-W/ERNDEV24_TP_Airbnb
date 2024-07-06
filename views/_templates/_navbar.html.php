@@ -68,17 +68,17 @@
                 error_reporting(E_ALL);
 
                 use Core\Session\Session;
-                use App\Controller\ReservationController;
+                use App\Controller\UserController;
                 use App\Controller\AuthController;
 
                 $auth = new AuthController();
-                $reservationController = new ReservationController();
+                $userController = new UserController();
                 $user_id = null;
                 $userHasListings = false;
 
                 if ($auth::isAuth()) {
                     $user_id = Session::get(Session::USER)->id;
-                    $userHasListings = $reservationController->userHasListings($user_id);
+                    $userHasListings = $userController->userHasListings($user_id);
                     error_log('User has listings: ' . ($userHasListings ? 'yes' : 'no')); // Debugging line
                 }
 

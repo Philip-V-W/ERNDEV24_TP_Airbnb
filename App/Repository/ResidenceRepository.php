@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\AppRepoManager;
+use App\Model\User;
 use Core\Repository\Repository;
 use App\Model\Residence;
 use Exception;
@@ -47,71 +48,28 @@ class ResidenceRepository extends Repository
         return $this->pdo->lastInsertId();
     }
 
-    /**
-     * Function to find residences by user ID.
-     * @param int $userId The user ID to find residences for.
-     * @return array The list of residences.
-     */
-    public function findByUserId(int $userId): array
-    {
-        try {
-            // SQL query to find listings by user ID
-            $q = sprintf('SELECT * FROM %s WHERE `user_id` = :user_id', $this->getTableName());
-
-            // Prepare the SQL query
-            $stmt = $this->pdo->prepare($q);
-
-            // Return an empty array if statement preparation fails
-            if (!$stmt) return [];
-
-            // Execute the statement with the user ID parameter
-            $stmt->execute(['user_id' => $userId]);
-
-            // Fetch all results and create Residence objects
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $residences = [];
-            foreach ($results as $result) {
-                $residences[] = new Residence($result);
-            }
-
-            // Return the array of Residence objects
-            return $residences;
-
-        } catch (Exception $e) {
-            // Handle any exceptions and log the error if needed
-            error_log("Error finding listings by user ID: " . $e->getMessage());
-            return [];
-        }
-    }
 
     /**
      * Function to find a residence by its ID.
      * @param int $id The ID of the residence to find.
      * @return ?Residence The found residence or null if not found.
      */
-    public function findById(int $id): ?Residence
+    public function findResidenceById(int $id): ?Residence
     {
         try {
-            // SQL query to find a residence by ID
             $q = sprintf('SELECT * FROM %s WHERE `id` = :id', $this->getTableName());
 
-            // Prepare the SQL query
             $stmt = $this->pdo->prepare($q);
 
-            // Return null if statement preparation fails
             if (!$stmt) return null;
 
-            // Execute the statement with the ID parameter
             $stmt->execute(['id' => $id]);
 
-            // Fetch the result and create a Residence object
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Return the Residence object or null if not found
             return $result ? new Residence($result) : null;
 
         } catch (Exception $e) {
-            // Handle any exceptions and log the error if needed
             error_log("Error finding residence by ID: " . $e->getMessage());
             return null;
         }
@@ -123,11 +81,28 @@ class ResidenceRepository extends Repository
      * @param array $data The data to update the residence with.
      * @return bool True if the update was successful, false otherwise.
      */
-    public function update(int $id, array $data): bool
+    public function updateResidenceById(int $id, array $data): bool
     {
         try {
             // SQL query to update a residence
-            $q = sprintf('UPDATE %s SET `title` = :title, `description` = :description, `price_per_night` = :price_per_night WHERE `id` = :id', $this->getTableName());
+            $q = sprintf(
+                'UPDATE %s SET 
+                `title` = :title, 
+                `description` = :description, 
+                `price_per_night` = :price_per_night, 
+                `size` = :size,
+                `nb_rooms` = :nb_rooms,
+                `nb_beds` = :nb_beds,
+                `nb_baths` = :nb_baths,
+                `nb_guests` = :nb_guests,
+                `type_id` = :type_id,
+                `address` = :address,
+                `city` = :city,
+                `zip` = :zip,
+                `country` = :country
+            WHERE `id` = :id',
+                $this->getTableName()
+            );
 
             // Prepare the SQL query
             $stmt = $this->pdo->prepare($q);
@@ -140,6 +115,16 @@ class ResidenceRepository extends Repository
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'price_per_night' => $data['price_per_night'],
+                'size' => $data['size'],
+                'nb_rooms' => $data['nb_rooms'],
+                'nb_beds' => $data['nb_beds'],
+                'nb_baths' => $data['nb_baths'],
+                'nb_guests' => $data['nb_guests'],
+                'type_id' => $data['type_id'],
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'zip' => $data['zip'],
+                'country' => $data['country'],
                 'id' => $id,
             ]);
 
@@ -148,23 +133,27 @@ class ResidenceRepository extends Repository
             error_log("Error updating residence: " . $e->getMessage());
             return false;
         }
-    }
+    } // TODO: fix
 
     /**
      * Function to delete a residence by its ID.
      * @param int $id The ID of the residence to delete.
      * @return bool True if the deletion was successful, false otherwise.
      */
-    public function deleteById(int $id): bool
+    public function deleteResidenceById(int $id): bool
     {
         try {
             $this->pdo->beginTransaction();
 
-            // Delete related records in residence_equipment table
+            // Delete related records in the residence_equipment table
             $stmt = $this->pdo->prepare('DELETE FROM residence_equipment WHERE residence_id = :id');
             $stmt->execute(['id' => $id]);
 
-            // Delete record in residence table
+            // Delete related records in the media table
+            $stmt = $this->pdo->prepare('DELETE FROM media WHERE residence_id = :id');
+            $stmt->execute(['id' => $id]);
+
+            // Delete the record in the residence table
             $stmt = $this->pdo->prepare('DELETE FROM residence WHERE id = :id');
             $stmt->execute(['id' => $id]);
 
@@ -176,4 +165,9 @@ class ResidenceRepository extends Repository
             return false;
         }
     }
+
+
+
+
+
 }

@@ -19,7 +19,7 @@ class EquipmentRepository extends Repository
 
     public function getAllEquipment(): array
     {
-        $q = sprintf('SELECT `id`, `label` FROM `%s`', $this->getTableName());
+        $q = sprintf('SELECT `id`, `label`, `image_path` FROM `%s`', $this->getTableName());
         $stmt = $this->pdo->prepare($q);
         if (!$stmt) return [];
 

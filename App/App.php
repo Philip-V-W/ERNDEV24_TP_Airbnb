@@ -78,17 +78,31 @@ class App implements DatabaseConfigInterface
         $this->router->get('/logout', [AuthController::class, 'logout']);
 
         // RESIDENCE SECTION:
-        $this->router->get('/', [ResidenceController::class, 'home']);
-        $this->router->get('/results', [ResidenceController::class, 'results']);
-        $this->router->get('/rooms', [ResidenceController::class, 'rooms']);
-        $this->router->get('/residence', [ResidenceController::class, 'residence']);
+        $this->router->get('/', [ResidenceController::class, 'viewHomepage']);
+        $this->router->get('/results', [ResidenceController::class, 'viewResults']);
+        $this->router->get('/rooms', [ResidenceController::class, 'viewRooms']);
+        $this->router->get('/residence', [ResidenceController::class, 'viewResidenceForm']);
         $this->router->post('/addResidenceForm', [ResidenceController::class, 'addResidenceForm']);
+        $this->router->get('/user/edit-residence/{id}', [ResidenceController::class, 'editResidence']);
+        $this->router->post('/user/edit-residence/{id}', [ResidenceController::class, 'editResidence']);
+        $this->router->post('/user/delete-residence/{id}', [ResidenceController::class, 'deleteResidence']);
 
         // USER SECTION:
         $this->router->get('/manage-listings', [UserController::class, 'manageListings']);
-        $this->router->get('/user/edit-residence/{id}', [UserController::class, 'editResidence']);
-        $this->router->post('/user/edit-residence/{id}', [UserController::class, 'editResidence']);
-        $this->router->post('/user/delete-residence/{id}', [UserController::class, 'deleteResidence']);
+
+        // TEST SECTION:
+        $this->router->get('/become_host', [UserController::class, 'becomeHost']);
+        $this->router->get('/edit_property', [UserController::class, 'editProperty']);
+        $this->router->get('/index', [UserController::class, 'index']);
+        $this->router->get('/message', [UserController::class, 'message']);
+        $this->router->get('/photo', [UserController::class, 'photo']);
+        $this->router->get('/profile', [UserController::class, 'profile']);
+        $this->router->get('/search', [UserController::class, 'search']);
+        $this->router->get('/show', [UserController::class, 'show']);
+        $this->router->get('/sponsor_form', [UserController::class, 'sponsorForm']);
+        $this->router->get('/sponsor_form_update', [UserController::class, 'sponsorFormUpdate']);
+        $this->router->get('/stats', [UserController::class, 'stats']);
+
     }
 
     /**

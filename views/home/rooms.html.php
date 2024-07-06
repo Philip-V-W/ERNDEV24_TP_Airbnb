@@ -1,7 +1,5 @@
 <body id="rooms">
 
-
-
 <main class="container" id="third-page">
     <section class="container px-0 d-flex justify-content-between align-items-center py-2">
         <!-- Property name -->
@@ -1072,8 +1070,6 @@
         </div>
     </div>
 </section>
-
-
 
 <!-- Sticky reservation button on small and medium devices-->
 <div class="container-fluid d-flex d-lg-none collapsed-booking">

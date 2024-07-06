@@ -8,29 +8,34 @@ use Core\Form\FormError;
 use Core\Form\FormResult;
 use Core\Session\Session;
 use Core\View\View;
+use Exception;
 use Laminas\Diactoros\ServerRequest;
 
 class ResidenceController extends Controller
 {
-    public function home(): void
+    // Display the homepage
+    public function viewHomepage(): void
     {
         $view = new View('home/index');
         $view->render();
     }
 
-    public function results(): void
+    // Show search results
+    public function viewResults(): void
     {
         $view = new View('home/results');
         $view->render();
     }
 
-    public function rooms(): void
+    // Display available rooms
+    public function viewRooms(): void
     {
         $view = new View('home/rooms');
         $view->render();
     }
 
-    public function residence(): void
+    // Display the residence form
+    public function viewResidenceForm(): void
     {
         $view_data = [
             'form_result' => Session::get(Session::FORM_RESULT),
@@ -40,11 +45,13 @@ class ResidenceController extends Controller
         $view->render($view_data);
     }
 
+    // Add a new residence to the database
     public function addResidenceForm(ServerRequest $request): void
     {
         $data_form = $request->getParsedBody();
         $form_result = new FormResult();
 
+        // Validate and extract form data
         $title = $data_form['title'] ?? '';
         $description = $data_form['description'] ?? '';
         $price_per_night = $data_form['price'] ?? '';
@@ -61,15 +68,15 @@ class ResidenceController extends Controller
         $country = $data_form['country'] ?? '';
         $equipment_ids = $data_form['equipment'] ?? [];
 
-        if (empty($title) || empty($description) || empty($price_per_night) || empty($size) || empty($nb_rooms) || empty($nb_beds) || empty($nb_baths) || empty($nb_guests) || empty($user_id) || empty($type_id) || empty($address) || empty($city) || empty($zip_code) || empty($country) || empty($equipment_ids)) {
-            $form_result->addError(new FormError('Veuillez remplir tous les champs'));
+        if (empty($title) || empty($description) || empty($price_per_night) || empty($size) || empty($nb_rooms) || empty($nb_beds) || empty($nb_baths) || empty($nb_guests) || empty($user_id) || empty($type_id) || empty($address) || empty($city) || empty($zip_code) || empty($country)) {
+            $form_result->addError(new FormError('Please fill in all the fields'));
             Session::set(Session::FORM_RESULT, $form_result);
             self::redirect('/residence');
             return;
         }
 
         if (!is_numeric($type_id) || !$type = AppRepoManager::getRm()->getTypeRepository()->findTypeById($type_id)) {
-            $form_result->addError(new FormError('Type invalide sélectionné'));
+            $form_result->addError(new FormError('Invalid type selected'));
             Session::set(Session::FORM_RESULT, $form_result);
             self::redirect('/residence');
             return;
@@ -78,7 +85,7 @@ class ResidenceController extends Controller
         $valid_equipment_ids = AppRepoManager::getRm()->getEquipmentRepository()->getAllEquipmentIds();
         foreach ($equipment_ids as $equipment_id) {
             if (!in_array($equipment_id, $valid_equipment_ids)) {
-                $form_result->addError(new FormError('Équipement invalide sélectionné'));
+                $form_result->addError(new FormError('Invalid equipment selected'));
                 Session::set(Session::FORM_RESULT, $form_result);
                 self::redirect('/residence');
                 return;
@@ -95,7 +102,7 @@ class ResidenceController extends Controller
         $address_id = AppRepoManager::getRm()->getAddressRepository()->insertAddress($address_data);
 
         if (is_null($address_id)) {
-            $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout de l\'adresse'));
+            $form_result->addError(new FormError('An error occurred while adding the address'));
             Session::set(Session::FORM_RESULT, $form_result);
             self::redirect('/residence');
             return;
@@ -118,7 +125,7 @@ class ResidenceController extends Controller
 
         $residence_id = AppRepoManager::getRm()->getResidenceRepository()->insertResidence($residence_data);
         if (is_null($residence_id)) {
-            $form_result->addError(new FormError('Une erreur est survenue lors de l\'ajout de la résidence'));
+            $form_result->addError(new FormError('An error occurred while adding the residence'));
             Session::set(Session::FORM_RESULT, $form_result);
             self::redirect('/residence');
             return;
@@ -132,6 +139,70 @@ class ResidenceController extends Controller
             AppRepoManager::getRm()->getEquipmentRepository()->insertResidenceEquipment($equipment_data);
         }
 
+        // Handle multiple file uploads including cover image and additional images
+        $uploadDir = 'uploads/';
+        $all_files = [];
+        if (isset($_FILES['photo_url'])) {
+            $all_files[] = $_FILES['photo_url'];
+        }
+        if (isset($_FILES['photo_url_additional'])) {
+            foreach ($_FILES['photo_url_additional']['name'] as $key => $value) {
+                $all_files[] = [
+                    'name' => $_FILES['photo_url_additional']['name'][$key],
+                    'type' => $_FILES['photo_url_additional']['type'][$key],
+                    'tmp_name' => $_FILES['photo_url_additional']['tmp_name'][$key],
+                    'error' => $_FILES['photo_url_additional']['error'][$key],
+                    'size' => $_FILES['photo_url_additional']['size'][$key],
+                ];
+            }
+        }
+
+        foreach ($all_files as $file) {
+            if ($file['error'] === UPLOAD_ERR_OK) {
+                $fileTmpPath = $file['tmp_name'];
+                $fileName = $file['name'];
+                $fileNameComps = explode(".", $fileName);
+                $fileExtension = strtolower(end($fileNameComps));
+
+                // Sanitize file name
+                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+                // Check if file is a valid image type
+                $allowedFileExtensions = ['jpg', 'gif', 'png', 'jpeg', 'webp'];
+                if (in_array($fileExtension, $allowedFileExtensions)) {
+                    // Ensure the upload directory exists
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
+                    }
+
+                    // Directory where the file will be moved
+                    $dest_path = $uploadDir . $newFileName;
+
+                    // Move the file to the upload directory
+                    if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                        // Insert file path into media table
+                        $media_data = [
+                            'image_path' => $dest_path,
+                            'residence_id' => $residence_id
+                        ];
+                        AppRepoManager::getRm()->getMediaRepository()->addMedia($media_data);
+                    } else {
+                        $form_result->addError(new FormError('There was an error moving the uploaded file.'));
+                        Session::set(Session::FORM_RESULT, $form_result);
+                        self::redirect('/residence');
+                        return;
+                    }
+                } else {
+                    $form_result->addError(new FormError('Upload failed. Allowed file types: ' . implode(',', $allowedFileExtensions)));
+                    Session::set(Session::FORM_RESULT, $form_result);
+                    self::redirect('/residence');
+                    return;
+                }
+            } else {
+                $form_result->addError(new FormError('Error uploading file: ' . $file['name']));
+            }
+        }
+
         if ($form_result->hasErrors()) {
             Session::set(Session::FORM_RESULT, $form_result);
             self::redirect('/residence');
@@ -140,5 +211,80 @@ class ResidenceController extends Controller
             Session::set(Session::FORM_SUCCESS, $form_result);
             self::redirect('/manage-listings');
         }
+    }
+
+
+
+
+
+
+
+
+
+
+    // Edit an existing residence
+    public function editResidence(int $residenceId, ServerRequest $request): void
+    {
+        // Logic to edit a residence
+        $residence = AppRepoManager::getRm()->getResidenceRepository()->findResidenceById($residenceId);
+        if (!$residence) {
+            self::redirect('/not-found');
+            return;
+        }
+
+        $data_form = $request->getParsedBody();
+        $residence->title = $data_form['title'] ?? $residence->title;
+        $residence->description = $data_form['description'] ?? $residence->description;
+        $residence->price_per_night = $data_form['price'] ?? $residence->price_per_night;
+        // Update other fields similarly...
+
+        AppRepoManager::getRm()->getResidenceRepository()->updateResidenceById($residence);
+
+        self::redirect('/residence/view/' . $residenceId);
+    } // TODO: fix
+
+    // Delete a residence
+    public function deleteResidence(ServerRequest $request, int $id): void
+    {
+        if (!AuthController::isAuth()) {
+            self::redirect('/login-form');
+            return;
+        }
+
+        try {
+            // Fetch the residence to get its associated images
+            $residenceRepository = AppRepoManager::getRm()->getResidenceRepository();
+            $mediaRepository = AppRepoManager::getRm()->getMediaRepository();
+
+            // Fetch associated media
+            $mediaList = $mediaRepository->findByResidenceId($id);
+
+            // Delete associated images from the filesystem
+            foreach ($mediaList as $media) {
+                $imagePath = $media->getImagePath();
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+
+            // Delete the residence and associated records
+            $residenceRepository->deleteResidenceById($id);
+
+            // Redirect to the manage listings page
+            self::redirect('/manage-listings'); // Ensure this redirect path is correct
+        } catch (Exception $e) {
+            error_log("Error deleting residence: " . $e->getMessage());
+            echo "Error deleting residence: " . $e->getMessage(); // For debugging purposes
+        }
+    }
+
+    // List all residences
+    public function listResidences(): void
+    {
+        $residences = AppRepoManager::getRm()->getResidenceRepository()->findAllResidences();
+        $view_data = ['residences' => $residences];
+        $view = new View('home/residences');
+        $view->render($view_data);
+
     }
 }

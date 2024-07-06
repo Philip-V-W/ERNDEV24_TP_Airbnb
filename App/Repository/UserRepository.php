@@ -2,10 +2,13 @@
 
 namespace App\Repository;
 
+use App\Model\Residence;
 use Core\Repository\Repository;
 use App\Model\User;
 use Core\Session\Session;
 use Core\View\View;
+use Exception;
+use PDO;
 
 class UserRepository extends Repository
 {
@@ -72,12 +75,43 @@ class UserRepository extends Repository
         $stmt->execute(['email' => $email]);
 
         // Fetch the result and create a user object
-        while ($result = $stmt->fetch()) {
-            $user = new User($result);
-        }
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Return the user object or null if not found
-        return $user ?? null;
+        return $result ? new User($result) : null;
     }
 
+    /**
+     * Function to find residences by user ID.
+     * @param int $userId The user ID to find residences for.
+     * @return array The list of residences.
+     */
+    public function findByUserId(int $userId): array
+    {
+        try {
+            $q = sprintf('SELECT * FROM residence WHERE `user_id` = :user_id');
+            $stmt = $this->pdo->prepare($q);
+
+            if (!$stmt) {
+                error_log("Statement preparation failed.");
+                return [];
+            }
+
+            $stmt->execute(['user_id' => $userId]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Raw results from DB: " . print_r($results, true)); // Debugging line
+
+            $residences = [];
+            foreach ($results as $result) {
+                $residences[] = new Residence($result);
+            }
+
+            error_log("Constructed Residence objects: " . print_r($residences, true)); // Debugging line
+            return $residences;
+
+        } catch (Exception $e) {
+            error_log("Error finding residences by user ID: " . $e->getMessage());
+            return [];
+        }
+    }
 }

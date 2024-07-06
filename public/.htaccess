@@ -5,10 +5,17 @@
 
     RewriteEngine On
 
+    # Redirect requests to directories that do not end with a trailing slash
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
 
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # If the requested file or directory exists, serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Otherwise, route the request through index.php
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
 </IfModule>
