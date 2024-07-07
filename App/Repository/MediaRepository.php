@@ -52,8 +52,36 @@ class MediaRepository extends Repository
         }
     }
 
+    public function updateResidenceImages(int $residenceId, array $imagePaths): void
+    {
+        // Delete existing images for the residence
+        $stmt = $this->pdo->prepare('DELETE FROM media WHERE residence_id = :residence_id');
+        $stmt->execute(['residence_id' => $residenceId]);
+
+        // Insert new images
+        $stmt = $this->pdo->prepare('INSERT INTO media (residence_id, image_path) VALUES (:residence_id, :image_path)');
+        foreach ($imagePaths as $imagePath) {
+            $stmt->execute([
+                'residence_id' => $residenceId,
+                'image_path' => $imagePath
+            ]);
+        }
+    }
 
 
+    public function getImagesByResidenceId(int $residenceId): array
+    {
+        $stmt = $this->pdo->prepare('SELECT image_path FROM media WHERE residence_id = :residence_id');
+        $stmt->execute(['residence_id' => $residenceId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+
+    public function deleteImageById(int $id): bool
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM media WHERE id = :id');
+        return $stmt->execute(['id' => $id]);
+    }
 
 
 }

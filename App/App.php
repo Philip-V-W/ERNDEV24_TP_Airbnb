@@ -85,6 +85,8 @@ class App implements DatabaseConfigInterface
         $this->router->post('/addResidenceForm', [ResidenceController::class, 'addResidenceForm']);
         $this->router->get('/user/edit-residence/{id}', [ResidenceController::class, 'editResidence']);
         $this->router->post('/user/edit-residence/{id}', [ResidenceController::class, 'editResidence']);
+
+
         $this->router->post('/user/delete-residence/{id}', [ResidenceController::class, 'deleteResidence']);
 
         // RESERVATION SECTION:

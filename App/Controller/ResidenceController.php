@@ -273,26 +273,137 @@ class ResidenceController extends Controller
 
 
 
-    // Edit an existing residence
-    public function editResidence(int $residenceId, ServerRequest $request): void
+    public function editResidence(ServerRequest $request, int $id): void
     {
-        // Logic to edit a residence
-        $residence = AppRepoManager::getRm()->getResidenceRepository()->findResidenceById($residenceId);
+        $residence = AppRepoManager::getRm()->getResidenceRepository()->findResidenceById($id);
         if (!$residence) {
             self::redirect('/not-found');
             return;
         }
 
-        $data_form = $request->getParsedBody();
-        $residence->title = $data_form['title'] ?? $residence->title;
-        $residence->description = $data_form['description'] ?? $residence->description;
-        $residence->price_per_night = $data_form['price'] ?? $residence->price_per_night;
-        // Update other fields similarly...
+        // Fetch the address data
+        $address = AppRepoManager::getRm()->getAddressRepository()->findAddressById($residence->address_id);
 
-        AppRepoManager::getRm()->getResidenceRepository()->updateResidenceById($residence);
+        // Fetch the equipment data associated with the residence
+        $residenceEquipmentIds = AppRepoManager::getRm()->getEquipmentRepository()->getEquipmentsByResidenceId($id);
+        $residenceEquipments = AppRepoManager::getRm()->getEquipmentRepository()->findEquipmentsByIds($residenceEquipmentIds);
 
-        self::redirect('/residence/view/' . $residenceId);
-    } // TODO: fix
+        // Fetch images
+        $images = AppRepoManager::getRm()->getMediaRepository()->getImagesByResidenceId($id);
+
+        if ($request->getMethod() == 'POST') {
+            $data_form = $request->getParsedBody();
+
+            $residence->title = $data_form['title'] ?? $residence->title;
+            $residence->description = $data_form['description'] ?? $residence->description;
+            $residence->price_per_night = $data_form['price'] ?? $residence->price_per_night;
+            $residence->size = $data_form['size'] ?? $residence->size;
+            $residence->nb_rooms = $data_form['rooms'] ?? $residence->nb_rooms;
+            $residence->nb_beds = $data_form['bedrooms'] ?? $residence->nb_beds;
+            $residence->nb_baths = $data_form['bathrooms'] ?? $residence->nb_baths;
+            $residence->nb_guests = $data_form['guests'] ?? $residence->nb_guests;
+            $residence->type_id = $data_form['type_id'] ?? $residence->type_id;
+
+            // Update address data
+            $address_data = [
+                'address' => $data_form['address'],
+                'city' => $data_form['city'],
+                'zip_code' => $data_form['zip'],
+                'country' => $data_form['country']
+            ];
+
+            // Handle image upload
+            $uploadedFiles = $request->getUploadedFiles();
+            $imagePaths = [];
+
+            if (isset($uploadedFiles['photo_url']) && $uploadedFiles['photo_url']->getError() === UPLOAD_ERR_OK) {
+                $photo_url = $uploadedFiles['photo_url'];
+                $imagePaths[] = $this->handleImageUpload($photo_url);
+            }
+
+            if (isset($uploadedFiles['photo_url_additional'])) {
+                foreach ($uploadedFiles['photo_url_additional'] as $file) {
+                    if ($file->getError() === UPLOAD_ERR_OK) {
+                        $imagePaths[] = $this->handleImageUpload($file);
+                    }
+                }
+            }
+
+            // Update the residence and address in the database
+            $updated = AppRepoManager::getRm()->getResidenceRepository()->updateResidenceById($id, (array) $residence);
+            $updatedAddress = AppRepoManager::getRm()->getAddressRepository()->updateAddressById($address->id, $address_data);
+
+            // Save the uploaded images
+            if (!empty($imagePaths)) {
+                AppRepoManager::getRm()->getMediaRepository()->updateResidenceImages($id, $imagePaths);
+            }
+
+            // Update equipment data
+            $selectedEquipments = $data_form['equipment'] ?? [];
+            AppRepoManager::getRm()->getEquipmentRepository()->updateResidenceEquipments($id, $selectedEquipments);
+
+            if ($updated && $updatedAddress) {
+                self::redirect('/manage-listings');
+            }
+        }
+
+        // Fetch necessary data for the form
+        $equipments = AppRepoManager::getRm()->getEquipmentRepository()->getAllEquipment();
+        $types = AppRepoManager::getRm()->getTypeRepository()->getAllTypes();
+
+        // Correct path to the edit form view
+        $view = new View('home/edit-residence');
+        $view->render([
+            'residence' => $residence,
+            'equipments' => $equipments,
+            'types' => $types,
+            'address' => $address,
+            'residence_equipments' => $residenceEquipments,
+            'residence_id' => $id,
+            'images' => $images // Pass the images to the view
+        ]);
+    }
+
+
+
+    public function handleImageUpload($file): ?string
+    {
+        $uploadDir = 'uploads/';
+        $fileName = $file->getClientFilename();
+        $fileTmpPath = $file->getStream()->getMetadata('uri');
+        $fileNameComps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameComps));
+
+        // Sanitize file name
+        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+        // Check if file is a valid image type
+        $allowedFileExtensions = ['jpg', 'gif', 'png', 'jpeg', 'webp'];
+        if (in_array($fileExtension, $allowedFileExtensions)) {
+            // Ensure the upload directory exists
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            // Directory where the file will be moved
+            $dest_path = $uploadDir . $newFileName;
+
+            // Move the file to the upload directory
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                return $dest_path;
+            }
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+
+
 
     // Delete a residence
     public function deleteResidence(ServerRequest $request, int $id): void

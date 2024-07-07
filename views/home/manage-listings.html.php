@@ -79,43 +79,41 @@ function asset($path): string
                             <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3"><br>
                                 <div class="card">
                                     <a href="/rooms/<?= htmlspecialchars($listing->id) ?>" class="text-decoration-none text-reset">
-                                        <div id="carousel<?= htmlspecialchars($listing->id) ?>" class="carousel slide" data-bs-ride="carousel">
-                                            <div class="carousel-inner">
-                                                <?php
-                                                // Set default image if no photo_url is available
-                                                $mainImagePath = !empty($listing->photo_url) ? asset($listing->photo_url) : asset('assets/default-image.jpg');
-                                                ?>
-                                                <div class="carousel-item active">
-                                                    <img src="<?= htmlspecialchars($mainImagePath) ?>" class="d-block w-100" alt="Listing Image">
-                                                </div>
-                                                <?php
-                                                $i = 0;
-                                                if (!empty($photos[$listing->getId()])) {
-                                                    foreach ($photos[$listing->getId()] as $photo) {
-                                                        $image_path = asset($photo->image_path ?? '');
-                                                        ?>
-                                                        <div class="carousel-item<?= ($i == 0 && empty($listing->photo_url)) ? ' active' : '' ?>">
-                                                            <img src="<?= htmlspecialchars($image_path) ?>" class="d-block w-100" alt="Photo Image">
+                                        <?php
+                                        $hasPhotos = !empty($photos[$listing->getId()]);
+                                        $mainImagePath = !empty($listing->photo_url) ? asset($listing->photo_url) : null;
+                                        ?>
+                                        <?php if ($hasPhotos || $mainImagePath): ?>
+                                            <div id="carousel<?= htmlspecialchars($listing->id) ?>" class="carousel slide" data-bs-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <?php if ($mainImagePath): ?>
+                                                        <div class="carousel-item active">
+                                                            <img src="<?= htmlspecialchars($mainImagePath) ?>" class="d-block w-100" alt="Listing Image">
                                                         </div>
-                                                        <?php
-                                                        $i = 1;
-                                                    }
-                                                }
-                                                ?>
+                                                    <?php endif; ?>
+                                                    <?php if ($hasPhotos): ?>
+                                                        <?php foreach ($photos[$listing->getId()] as $index => $photo): ?>
+                                                            <?php $image_path = asset($photo->image_path ?? ''); ?>
+                                                            <div class="carousel-item<?= $mainImagePath ? '' : ($index === 0 ? ' active' : '') ?>">
+                                                                <img src="<?= htmlspecialchars($image_path) ?>" class="d-block w-100" alt="Photo Image">
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if ($hasPhotos && count($photos[$listing->getId()]) > 1): ?>
+                                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?= htmlspecialchars($listing->id) ?>" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true">
+                                                    <img src="assets/icons/icons8-back-50.png" alt="">
+                                                </span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel<?= htmlspecialchars($listing->id) ?>" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true">
+                                                    <img src="assets/icons/icons8-forward-50.png" alt="">
+                                                </span>
+                                                    </button>
+                                                <?php endif; ?>
                                             </div>
-                                            <?php if ($i == 1 || !empty($listing->photo_url)): ?>
-                                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?= htmlspecialchars($listing->id) ?>" data-bs-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true">
-                                                        <img src="assets/icons/icons8-back-50.png" alt="">
-                                                    </span>
-                                                </button>
-                                                <button class="carousel-control-next" type="button" data-bs-target="#carousel<?= htmlspecialchars($listing->id) ?>" data-bs-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true">
-                                                        <img src="assets/icons/icons8-forward-50.png" alt="">
-                                                    </span>
-                                                </button>
-                                            <?php endif; ?>
-                                        </div>
+                                        <?php endif; ?>
                                         <div class="card-body">
                                             <h5 class="card-title"><?= htmlspecialchars($listing->title ?? '') ?></h5>
                                             <p class="card-text">Hosted by <?= htmlspecialchars($user->lastname . ' ' . $user->firstname) ?></p>
@@ -140,6 +138,7 @@ function asset($path): string
                 </div>
             <?php endif; ?>
         </div><br>
+
 
         <div style="width: 100%; height: 2px; margin-bottom: 60px; background: rgb(131, 58, 180); background: linear-gradient(90deg, rgba(131, 58, 180, 0.6671043417366946) 0%, rgba(253, 29, 29, 0.7287289915966386) 50%, rgba(252, 176, 69, 0.6502976190476191) 100%);"></div>
 

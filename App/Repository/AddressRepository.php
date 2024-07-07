@@ -71,4 +71,39 @@ class AddressRepository extends Repository
             return null;
         }
     }
+
+
+
+    public function updateAddressById(int $id, array $data): bool
+    {
+        try {
+            $q = sprintf(
+                'UPDATE %s SET 
+            `address` = :address, 
+            `city` = :city, 
+            `zip_code` = :zip_code, 
+            `country` = :country 
+        WHERE `id` = :id',
+                $this->getTableName()
+            );
+
+            $stmt = $this->pdo->prepare($q);
+            if (!$stmt) return false;
+
+            return $stmt->execute([
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'zip_code' => $data['zip_code'],
+                'country' => $data['country'],
+                'id' => $id
+            ]);
+        } catch (Exception $e) {
+            error_log("Error updating address: " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+
+
 }

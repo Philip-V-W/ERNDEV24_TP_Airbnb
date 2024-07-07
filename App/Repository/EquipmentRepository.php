@@ -59,4 +59,35 @@ class EquipmentRepository extends Repository
     }
 
 
+
+
+    public function getEquipmentsByResidenceId(int $residenceId): array
+    {
+        $stmt = $this->pdo->prepare('SELECT equipment_id FROM residence_equipment WHERE residence_id = :residence_id');
+        $stmt->execute(['residence_id' => $residenceId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function updateResidenceEquipments(int $residenceId, array $selectedEquipments): void
+    {
+        // Delete existing equipment entries for the residence
+        $stmt = $this->pdo->prepare('DELETE FROM residence_equipment WHERE residence_id = :residence_id');
+        $stmt->execute(['residence_id' => $residenceId]);
+
+        // Insert new equipment entries
+        $stmt = $this->pdo->prepare('INSERT INTO residence_equipment (residence_id, equipment_id) VALUES (:residence_id, :equipment_id)');
+        foreach ($selectedEquipments as $equipmentId) {
+            $stmt->execute([
+                'residence_id' => $residenceId,
+                'equipment_id' => $equipmentId
+            ]);
+        }
+    }
+
+
+
+
+
+
+
 }

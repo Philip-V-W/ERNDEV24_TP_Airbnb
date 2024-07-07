@@ -84,33 +84,24 @@ class ResidenceRepository extends Repository
     public function updateResidenceById(int $id, array $data): bool
     {
         try {
-            // SQL query to update a residence
             $q = sprintf(
                 'UPDATE %s SET 
-                `title` = :title, 
-                `description` = :description, 
-                `price_per_night` = :price_per_night, 
-                `size` = :size,
-                `nb_rooms` = :nb_rooms,
-                `nb_beds` = :nb_beds,
-                `nb_baths` = :nb_baths,
-                `nb_guests` = :nb_guests,
-                `type_id` = :type_id,
-                `address` = :address,
-                `city` = :city,
-                `zip` = :zip,
-                `country` = :country
-            WHERE `id` = :id',
+            `title` = :title, 
+            `description` = :description, 
+            `price_per_night` = :price_per_night, 
+            `size` = :size,
+            `nb_rooms` = :nb_rooms,
+            `nb_beds` = :nb_beds,
+            `nb_baths` = :nb_baths,
+            `nb_guests` = :nb_guests,
+            `type_id` = :type_id
+        WHERE `id` = :id',
                 $this->getTableName()
             );
 
-            // Prepare the SQL query
             $stmt = $this->pdo->prepare($q);
-
-            // Return false if statement preparation fails
             if (!$stmt) return false;
 
-            // Execute the statement with the residence data
             return $stmt->execute([
                 'title' => $data['title'],
                 'description' => $data['description'],
@@ -121,19 +112,14 @@ class ResidenceRepository extends Repository
                 'nb_baths' => $data['nb_baths'],
                 'nb_guests' => $data['nb_guests'],
                 'type_id' => $data['type_id'],
-                'address' => $data['address'],
-                'city' => $data['city'],
-                'zip' => $data['zip'],
-                'country' => $data['country'],
-                'id' => $id,
+                'id' => $id
             ]);
-
         } catch (Exception $e) {
-            // Handle any exceptions and log the error if needed
             error_log("Error updating residence: " . $e->getMessage());
             return false;
         }
-    } // TODO: fix
+    }
+
 
     /**
      * Function to delete a residence by its ID.
