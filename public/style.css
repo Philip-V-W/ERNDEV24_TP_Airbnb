@@ -89,6 +89,11 @@ header button i:last-of-type {
     --bs-btn-border-radius: none;
 }
 
+.table-striped tbody tr td {
+    cursor: default;
+    background-color: inherit;
+}
+
 button.btn {
     margin: 0;
 }
@@ -285,8 +290,16 @@ nav {
 .card-text {
     font-size: 0.9em;
     line-height: 1.25em;
-    margin: 0;
+    margin: 3px;
     padding: 0;
+}
+
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-title,

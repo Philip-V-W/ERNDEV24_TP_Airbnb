@@ -114,4 +114,26 @@ class UserRepository extends Repository
             return [];
         }
     }
+
+    public function fetchUserById(int $id): ?User
+    {
+        $q = sprintf('SELECT * FROM %s WHERE `id` = :id', $this->getTableName());
+
+        $stmt = $this->pdo->prepare($q);
+
+        if (!$stmt) return null;
+
+        $stmt->execute(['id' => $id]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? new User($result) : null;
+    }
+
+
+
+
+
+
+
 }

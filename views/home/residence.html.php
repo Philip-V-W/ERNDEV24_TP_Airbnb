@@ -90,7 +90,11 @@ foreach ($equipments as $equipment) {
 
                             <div class="form-group">
                                 <label for="guests">Guests</label>
-                                <input type="number" name="guests" class="form-control">
+                                <select class="form-control" name="guests">
+                                    <?php for ($i = 1; $i <= 20; $i++): ?>
+                                        <option value="<?= $i ?>"><?= $i ?></option>
+                                    <?php endfor; ?>
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -107,8 +111,7 @@ foreach ($equipments as $equipment) {
 
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="" id="addresshost" name="address" class="form-control"
-                                       placeholder="Search...">
+                                <input type="" id="addresshost" name="address" class="form-control">
                             </div>
 
                             <div class="form-group">
@@ -152,13 +155,13 @@ foreach ($equipments as $equipment) {
                             <div class="form-group"><br>
                                 <label for="photo_url">Upload your cover image</label>
                                 <input type="file" name="photo_url" class="form-control">
-                            </div>
+                            </div><br>
 
                             <div class="form-group">
                                 <label for="additional_photos">Upload additional images</label>
                                 <input type="file" name="photo_url_additional[]" class="form-control" multiple>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-block">Insert your residence</button>
+                            </div><br>
+                            <button type="submit" class="reserve-btn mb-3">Insert your residence</button>
                         </form>
                     </div>
                 </div>

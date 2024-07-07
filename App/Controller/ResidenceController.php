@@ -14,11 +14,11 @@ use Laminas\Diactoros\ServerRequest;
 class ResidenceController extends Controller
 {
     // Display the homepage
-    public function viewHomepage(): void
-    {
-        $view = new View('home/index');
-        $view->render();
-    }
+//    public function viewHomepage(): void
+//    {
+//        $view = new View('home/index');
+//        $view->render();
+//    }
 
     // Show search results
     public function viewResults(): void
@@ -27,19 +27,19 @@ class ResidenceController extends Controller
         $view->render();
     }
 
+
+
+
+
     public function viewRooms(ServerRequest $request, int $id): void
     {
-        $user = Session::get(Session::USER);
-        if (!$user) {
-            throw new Exception("User not logged in");
-        }
-
         // Fetch the specific listing by ID
         $listingRepository = AppRepoManager::getRm()->getResidenceRepository();
         $mediaRepository = AppRepoManager::getRm()->getMediaRepository();
         $equipmentRepository = AppRepoManager::getRm()->getEquipmentRepository();
         $residenceEquipmentRepository = AppRepoManager::getRm()->getResidenceEquipmentRepository();
         $addressRepository = AppRepoManager::getRm()->getAddressRepository();
+        $userRepository = AppRepoManager::getRm()->getUserRepository(); // Add user repository to fetch host info
 
         $listing = $listingRepository->findResidenceById($id);
         if (!$listing) {
@@ -58,17 +58,27 @@ class ResidenceController extends Controller
         // Fetch the equipment details for the IDs
         $equipments = $equipmentRepository->findEquipmentsByIds($equipmentIds);
 
-        // Pass the listing, photos, address, and equipment to the view
+        // Fetch the host's information
+        $host = $userRepository->fetchUserById($listing->user_id);
+
+
+        // Pass the listing, photos, address, equipment, and host to the view
         $view = new View('home/rooms');
         $view_data = [
             'listing' => $listing,
             'photos' => $photos,
             'address' => $address,
             'equipments' => $equipments,
-            'user' => $user
+            'host' => $host, // Pass host information
+            'user' => Session::get(Session::USER) // Pass logged-in user session if available
         ];
         $view->render($view_data);
     }
+
+
+
+
+
 
 
 
@@ -182,10 +192,10 @@ class ResidenceController extends Controller
         // Handle multiple file uploads including cover image and additional images
         $uploadDir = 'uploads/';
         $all_files = [];
-        if (isset($_FILES['photo_url'])) {
+        if (isset($_FILES['photo_url']) && $_FILES['photo_url']['error'] !== UPLOAD_ERR_NO_FILE) {
             $all_files[] = $_FILES['photo_url'];
         }
-        if (isset($_FILES['photo_url_additional'])) {
+        if (isset($_FILES['photo_url_additional']) && !empty($_FILES['photo_url_additional']['name'][0])) {
             foreach ($_FILES['photo_url_additional']['name'] as $key => $value) {
                 $all_files[] = [
                     'name' => $_FILES['photo_url_additional']['name'][$key],
@@ -238,7 +248,7 @@ class ResidenceController extends Controller
                     self::redirect('/residence');
                     return;
                 }
-            } else {
+            } elseif ($file['error'] !== UPLOAD_ERR_NO_FILE) {
                 $form_result->addError(new FormError('Error uploading file: ' . $file['name']));
             }
         }
@@ -252,6 +262,7 @@ class ResidenceController extends Controller
             self::redirect('/manage-listings');
         }
     }
+
 
 
 
@@ -318,16 +329,25 @@ class ResidenceController extends Controller
         }
     }
 
-    // List all residences
-    public function listResidences(): void
+
+
+
+
+
+
+    public function viewHomepage(): void
     {
-        $residences = AppRepoManager::getRm()->getResidenceRepository()->findAllResidences();
-        $view_data = ['residences' => $residences];
-        $view = new View('home/residences');
-        $view->render($view_data);
+        // Fetch simplified listings from the repository
+        $listings = AppRepoManager::getRm()->getResidenceRepository()->getAllListings();
 
+        error_log("Listings passed to view: " . print_r($listings, true)); // Log the data passed to the view
+
+        // Render the view with the listings
+        $view = new View('home/index');
+        $view->render([
+            'listings' => $listings,
+        ]);
     }
-
 
 
 

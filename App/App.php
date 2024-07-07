@@ -89,6 +89,7 @@ class App implements DatabaseConfigInterface
 
         // RESERVATION SECTION:
         $this->router->post('/submit-reservation', [ReservationController::class, 'submitReservation']);
+        $this->router->post('/cancel-reservation/{id}', [ReservationController::class, 'cancelReservation']);
 
 
         // USER SECTION:

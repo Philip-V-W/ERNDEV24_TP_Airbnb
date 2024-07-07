@@ -1,7 +1,7 @@
 <!-- Header -->
 <div class="d-flex container py-3 ">
     <div class="logo d-none d-lg-block">
-        <a href="/"><img src="assets/logo-pink.png" alt="logo"></a>
+        <a href="/"><img src="/assets/logo-pink.png" alt="logo"></a>
     </div>
     <!-- search bar top -->
     <div class="container-fluid d-flex align-items-baseline ">
@@ -99,23 +99,19 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <?php if ($userHasListings): ?>
-                            <a class="dropdown-item" type="button" href="/manage-listings">Manage listings</a>
-                        <?php else: ?>
                             <a class="dropdown-item" type="button" href="/residence">Airbnb your home</a>
-                        <?php endif; ?>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Refer a Host</button>
                     </li>
                     <li>
-                        <button class="dropdown-item" type="button">Account</button>
+                        <a class="dropdown-item" type="button" href="/manage-listings">Account</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards</button>
+                        <button class="dropdown-item" type="button">Gift Cards</button>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Help center</button>
@@ -381,10 +377,10 @@
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#iconsCarousel" data-bs-slide="prev">
-        <img src="assets/icons/left.png" alt="">
+        <img src="/assets/icons/left.png" alt="">
     </button>
     <!-- Pulsante successivo -->
     <button class="carousel-control-next" type="button" data-bs-target="#iconsCarousel" data-bs-slide="next">
-        <img src="assets/icons/right.png" alt="">
+        <img src="/assets/icons/right.png" alt="">
     </button>
 </nav>

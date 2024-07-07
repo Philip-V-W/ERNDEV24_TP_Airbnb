@@ -11,6 +11,9 @@ use Laminas\Diactoros\ServerRequest;
 
 class UserController extends Controller
 {
+
+
+
     public function manageListings(): void
     {
         if (!AuthController::isAuth()) {
@@ -21,35 +24,41 @@ class UserController extends Controller
         $userId = $user->id;
         $userRepository = AppRepoManager::getRm()->getUserRepository();
         $mediaRepository = AppRepoManager::getRm()->getMediaRepository();
+        $reservationRepository = AppRepoManager::getRm()->getReservationRepository();
 
         // Fetch listings from the user repository
         $listings = $userRepository->findByUserId($userId);
-        error_log("Listings fetched: " . print_r($listings, true)); // Debugging line
+
+        // Fetch reservations for the user's listings
+        $reservations = $reservationRepository->findReservationsByUserId($userId);
+
+        // Fetch reservations made by the user on other listings
+        $userReservations = $reservationRepository->findReservationsMadeByUserId($userId);
 
         // Fetch media for each listing
         $photos = [];
         foreach ($listings as $listing) {
             $listingPhotos = $mediaRepository->findByResidenceId($listing->id);
-            error_log("Photos for listing ID " . $listing->id . ": " . print_r($listingPhotos, true)); // Debugging line
             $photos[$listing->id] = $listingPhotos;
         }
 
         $date = new \DateTime();
 
         $view = new View('home/manage-listings');
-        error_log("Rendering view with data: " . print_r([
-                'user' => $user,
-                'listings' => $listings,
-                'photos' => $photos,
-                'date' => $date
-            ], true)); // Debugging line
         $view->render([
             'user' => $user,
             'listings' => $listings,
             'photos' => $photos,
-            'date' => $date
+            'date' => $date,
+            'reservations' => $reservations,
+            'user_reservations' => $userReservations // Pass the new data to the view
         ]);
     }
+
+
+
+
+
 
 
     public function userHasListings($userId): bool

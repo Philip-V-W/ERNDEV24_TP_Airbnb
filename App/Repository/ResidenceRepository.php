@@ -170,4 +170,58 @@ class ResidenceRepository extends Repository
 
 
 
+
+
+
+    public function getAllListings(): array
+    {
+        $query = "
+    SELECT
+        r.id,
+        r.title,
+        r.price_per_night,
+        u.firstname AS user_firstname,
+        u.lastname AS user_lastname,
+        m.image_path
+    FROM residence r
+    JOIN user u ON r.user_id = u.id
+    LEFT JOIN media m ON r.id = m.residence_id
+    WHERE r.is_active = 1
+    ";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Group listings by residence id and aggregate images
+        $listings = [];
+        foreach ($results as $result) {
+            if (!isset($listings[$result['id']])) {
+                $listings[$result['id']] = [
+                    'id' => $result['id'],
+                    'title' => $result['title'],
+                    'price_per_night' => $result['price_per_night'],
+                    'user_firstname' => $result['user_firstname'],
+                    'user_lastname' => $result['user_lastname'],
+                    'images' => []
+                ];
+            }
+            if ($result['image_path']) {
+                $listings[$result['id']]['images'][] = $result['image_path'];
+            }
+        }
+
+        // Flatten the associative array to pass to the view
+        return array_values($listings);
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -93,9 +93,9 @@
                 <p>EUR</p>
             </div>
             <div class="d-none d-md-block icons">
-                <a href="#"><img src="assets/icons/facebook-square-social-logo-svgrepo-com.svg" alt="facebook icon"></a>
-                <a href="#"><img src="assets/icons/twitter-square-logo-svgrepo-com.svg" alt="twitter icon"></a>
-                <a href="#"><img src="assets/icons/instagram-svgrepo-com.svg" alt="instagram icon"></a>
+                <a href="#"><img src="/assets/icons/facebook-square-social-logo-svgrepo-com.svg" alt="facebook icon"></a>
+                <a href="#"><img src="/assets/icons/twitter-square-logo-svgrepo-com.svg" alt="twitter icon"></a>
+                <a href="#"><img src="/assets/icons/instagram-svgrepo-com.svg" alt="instagram icon"></a>
             </div>
         </div>
         <div id="foot">

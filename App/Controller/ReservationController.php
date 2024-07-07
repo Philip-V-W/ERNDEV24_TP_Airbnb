@@ -27,9 +27,42 @@ class ReservationController extends Controller
     }
 
     // Cancel a reservation
-    public function cancelReservation($reservationId)
+    public function cancelReservation(ServerRequest $request, int $id): void
     {
+        $user = Session::get(Session::USER);
+        if (!$user) {
+            self::redirect('/login-form');
+            return;
+        }
+
+        $reservationRepository = AppRepoManager::getRm()->getReservationRepository();
+
+        // Fetch the reservation details directly to ensure the user is authorized
+        $reservation = $reservationRepository->findReservationDetailsById($id);
+
+        if (!$reservation) {
+            Session::set('flash_error', 'Reservation not found');
+            self::redirect('/manage-listings');
+            return;
+        }
+
+        if ($reservation['user_id'] !== $user->id) {
+            Session::set('flash_error', 'You are not authorized to cancel this reservation');
+            self::redirect('/manage-listings');
+            return;
+        }
+
+        $result = $reservationRepository->cancelReservation($id);
+        if ($result) {
+            Session::set('flash_success', 'Reservation cancelled successfully');
+        } else {
+            Session::set('flash_error', 'Failed to cancel reservation');
+        }
+
+        self::redirect('/manage-listings');
     }
+
+
 
     // List all reservations (if applicable)
     public function listReservations()

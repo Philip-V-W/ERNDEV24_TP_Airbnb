@@ -14,9 +14,6 @@ if (!function_exists('asset')) {
 }
 ?>
 
-<!--<head>-->
-<!--    <base href="/">-->
-<!--</head>-->
 <body id="rooms">
 <main class="container" id="third-page">
 
@@ -153,9 +150,9 @@ if (!function_exists('asset')) {
                         <div class="row">
                             <span class="col-2"><img src="/assets/person4.jpg" alt=""></span>
                             <span class="col-10">
-                                    <p>Hosted by <?= htmlspecialchars($user->lastname . ' ' . $user->firstname) ?></p>
-                                    <p>Super Host · 9 years hosting</p>
-                                </span>
+            <p>Hosted by <?= htmlspecialchars($host->lastname . ' ' . $host->firstname) ?></p>
+            <p>Super Host · 9 years hosting</p>
+        </span>
                         </div>
 
                         <div class="features-description">
@@ -180,9 +177,9 @@ if (!function_exists('asset')) {
                                     </ul>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
                 </div>
                 <!-- Calendar -->
 
@@ -191,10 +188,9 @@ if (!function_exists('asset')) {
             <div class="col-12 col-lg-5 m-0 p-0 booking-modal">
                 <div class="sticky container ms-xl-5 mt-2 d-flex justify-content-center">
                     <div class="reservation-card p-4">
-
-
-                        <form id="reservation-form" method="POST">
-                            <div class="price" id="price_per_night" data-price="<?= htmlspecialchars($listing->price_per_night) ?>">
+                        <form id="reservation-form" method="POST" action="/submit-reservation">
+                            <div class="price" id="price_per_night"
+                                 data-price="<?= htmlspecialchars($listing->price_per_night) ?>">
                                 <?= htmlspecialchars($listing->price_per_night) ?> €
                                 <span class="text-muted" style="font-size: 16px;">night</span>
                             </div>
@@ -202,11 +198,13 @@ if (!function_exists('asset')) {
                             <div class="d-flex justify-content-between reservation-details mb-3">
                                 <div>
                                     <small>CHECK-IN</small>
-                                    <input type="date" id="date_start" name="date_start" required onchange="calculateTotalPrice()">
+                                    <input type="date" id="date_start" name="date_start" required
+                                           onchange="calculateTotalPrice()">
                                 </div>
                                 <div>
                                     <small>CHECKOUT</small>
-                                    <input type="date" id="date_end" name="date_end" required onchange="calculateTotalPrice()">
+                                    <input type="date" id="date_end" name="date_end" required
+                                           onchange="calculateTotalPrice()">
                                 </div>
                             </div>
                             <div class="reservation-details mb-3">
@@ -242,10 +240,19 @@ if (!function_exists('asset')) {
                                 </select>
                             </div>
 
-                            <input type="hidden" id="residence_id" name="residence_id" value="<?= htmlspecialchars($listing->id) ?>">
+                            <input type="hidden" id="residence_id" name="residence_id"
+                                   value="<?= htmlspecialchars($listing->id) ?>">
                             <input type="hidden" id="price_total" name="price_total" required>
 
-                            <button class="reserve-btn mb-3" type="button" onclick="submitReservation()">Reserve</button>
+                            <?php if (isset($user)): ?>
+                                <button class="reserve-btn mb-3" type="button" onclick="submitReservation()">Reserve
+                                </button>
+                            <?php else: ?>
+                                <button class="reserve-btn mb-3" type="button"
+                                        onclick="window.location.href='/login-form'">Login to Reserve
+                                </button>
+                            <?php endif; ?>
+
 
                             <hr>
                             <div class="d-flex justify-content-between total-price">
@@ -254,12 +261,11 @@ if (!function_exists('asset')) {
                             </div>
                         </form>
 
-
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
+
 </body>
