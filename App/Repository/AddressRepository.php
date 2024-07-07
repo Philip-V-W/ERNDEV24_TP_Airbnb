@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Model\User;
 use Core\Repository\Repository;
 use App\Model\Address;
+use Exception;
+use PDO;
 
 class AddressRepository extends Repository
 {
@@ -42,5 +44,31 @@ class AddressRepository extends Repository
 
         // Get the last inserted ID
         return $this->pdo->lastInsertId();
+    }
+
+    /**
+     * Function to find an address by its ID.
+     * @param int $id The ID of the address to find.
+     * @return ?Address The found address or null if not found.
+     */
+    public function findAddressById(int $id): ?Address
+    {
+        try {
+            $q = sprintf('SELECT * FROM %s WHERE `id` = :id', $this->getTableName());
+
+            $stmt = $this->pdo->prepare($q);
+
+            if (!$stmt) return null;
+
+            $stmt->execute(['id' => $id]);
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, Address::class);
+
+            return $stmt->fetch();
+
+        } catch (Exception $e) {
+            error_log("Error finding address by ID: " . $e->getMessage());
+            return null;
+        }
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+
 use Core\Repository\Repository;
-use App\Model\Reservation;
+use PDOException;
+
 
 class ReservationRepository extends Repository
 {
@@ -16,26 +18,38 @@ class ReservationRepository extends Repository
         return 'reservation';
     }
 
-    /**
-     * méthode qui permet de récupérer la dernière commande
-     * @return ?int
-     */
-    public function findLastOrder(): ?int
+
+
+
+
+    public function createReservation(array $data): bool
     {
-        $q = sprintf(
-            'SELECT * 
-            FROM `%s` 
-            ORDER BY id DESC 
-            LIMIT 1',
-            $this->getTableName()
-        );
+        $q = "
+            INSERT INTO reservation (date_start, date_end, nb_adults, nb_children, price_total, residence_id, user_id)
+            VALUES (:date_start, :date_end, :nb_adults, :nb_children, :price_total, :residence_id, :user_id)
+        ";
 
-        $stmt = $this->pdo->query($q);
+        $stmt = $this->pdo->prepare($q);
 
-        if (!$stmt) return null;
-
-        $result = $stmt->fetchObject();
-
-        return $result->id ?? 0;
+        try {
+            return $stmt->execute($data);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

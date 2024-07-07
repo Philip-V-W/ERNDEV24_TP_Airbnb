@@ -32,7 +32,8 @@ foreach ($equipments as $equipment) {
         <div class="row justify-content-center" style="padding: 60px 0;">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header" style="text-align:center; color:#fff; font-weight:bold; background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,0.6671043417366946) 0%, rgba(253,29,29,0.7287289915966386) 50%, rgba(252,176,69,0.6502976190476191) 100%);">
+                    <div class="card-header"
+                         style="text-align:center; color:#fff; font-weight:bold; background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,0.6671043417366946) 0%, rgba(253,29,29,0.7287289915966386) 50%, rgba(252,176,69,0.6502976190476191) 100%);">
                         Insert your residence
                     </div>
                     <div class="card-body">
@@ -46,7 +47,8 @@ foreach ($equipments as $equipment) {
 
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea style="height: 270px;resize: none;" name="description" rows="8" cols="80" class="form-control"></textarea>
+                                <textarea style="height: 270px;resize: none;" name="description" rows="8" cols="80"
+                                          class="form-control"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -105,7 +107,8 @@ foreach ($equipments as $equipment) {
 
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="" id="addresshost" name="address" class="form-control" placeholder="Search...">
+                                <input type="" id="addresshost" name="address" class="form-control"
+                                       placeholder="Search...">
                             </div>
 
                             <div class="form-group">
@@ -132,9 +135,12 @@ foreach ($equipments as $equipment) {
                                     foreach ($items as $equipment) {
                                         ?>
                                         <div>
-                                            <input type="checkbox" name="equipment[]" value="<?= htmlspecialchars($equipment['id']) ?>">
+                                            <input type="checkbox" name="equipment[]"
+                                                   value="<?= htmlspecialchars($equipment['id']) ?>">
                                             <?php if (!empty($equipment['image_path'])): ?>
-                                                <img src="<?= htmlspecialchars($equipment['image_path']) ?>" alt="<?= htmlspecialchars($equipment['label']) ?>" style="width:30px; height:30px;">
+                                                <img src="<?= htmlspecialchars($equipment['image_path']) ?>"
+                                                     alt="<?= htmlspecialchars($equipment['label']) ?>"
+                                                     style="width:30px; height:30px;">
                                             <?php endif; ?>
                                             <label><?= htmlspecialchars($equipment['label']) ?></label>
                                         </div>
@@ -143,7 +149,6 @@ foreach ($equipments as $equipment) {
                                 }
                                 ?>
                             </div>
-
                             <div class="form-group"><br>
                                 <label for="photo_url">Upload your cover image</label>
                                 <input type="file" name="photo_url" class="form-control">

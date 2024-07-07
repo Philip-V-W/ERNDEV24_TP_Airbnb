@@ -27,12 +27,52 @@ class ResidenceController extends Controller
         $view->render();
     }
 
-    // Display available rooms
-    public function viewRooms(): void
+    public function viewRooms(ServerRequest $request, int $id): void
     {
+        $user = Session::get(Session::USER);
+        if (!$user) {
+            throw new Exception("User not logged in");
+        }
+
+        // Fetch the specific listing by ID
+        $listingRepository = AppRepoManager::getRm()->getResidenceRepository();
+        $mediaRepository = AppRepoManager::getRm()->getMediaRepository();
+        $equipmentRepository = AppRepoManager::getRm()->getEquipmentRepository();
+        $residenceEquipmentRepository = AppRepoManager::getRm()->getResidenceEquipmentRepository();
+        $addressRepository = AppRepoManager::getRm()->getAddressRepository();
+
+        $listing = $listingRepository->findResidenceById($id);
+        if (!$listing) {
+            throw new Exception("Listing not found");
+        }
+
+        // Fetch media for the listing (limit to 5)
+        $photos = array_slice($mediaRepository->findByResidenceId($listing->id), 0, 5);
+
+        // Fetch the address for the listing
+        $address = $addressRepository->findAddressById($listing->address_id);
+
+        // Fetch the equipment IDs associated with the listing
+        $equipmentIds = $residenceEquipmentRepository->findEquipmentIdsByResidenceId($listing->id);
+
+        // Fetch the equipment details for the IDs
+        $equipments = $equipmentRepository->findEquipmentsByIds($equipmentIds);
+
+        // Pass the listing, photos, address, and equipment to the view
         $view = new View('home/rooms');
-        $view->render();
+        $view_data = [
+            'listing' => $listing,
+            'photos' => $photos,
+            'address' => $address,
+            'equipments' => $equipments,
+            'user' => $user
+        ];
+        $view->render($view_data);
     }
+
+
+
+
 
     // Display the residence form
     public function viewResidenceForm(): void
@@ -287,4 +327,20 @@ class ResidenceController extends Controller
         $view->render($view_data);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -44,6 +44,19 @@ class EquipmentRepository extends Repository
         $stmt->execute($data);
     }
 
+    public function findEquipmentsByIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $query = sprintf('SELECT * FROM %s WHERE `id` IN (%s)', $this->getTableName(), $placeholders);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($ids);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 }

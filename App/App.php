@@ -80,12 +80,16 @@ class App implements DatabaseConfigInterface
         // RESIDENCE SECTION:
         $this->router->get('/', [ResidenceController::class, 'viewHomepage']);
         $this->router->get('/results', [ResidenceController::class, 'viewResults']);
-        $this->router->get('/rooms', [ResidenceController::class, 'viewRooms']);
+        $this->router->get('/rooms/{id}', [ResidenceController::class, 'viewRooms']);
         $this->router->get('/residence', [ResidenceController::class, 'viewResidenceForm']);
         $this->router->post('/addResidenceForm', [ResidenceController::class, 'addResidenceForm']);
         $this->router->get('/user/edit-residence/{id}', [ResidenceController::class, 'editResidence']);
         $this->router->post('/user/edit-residence/{id}', [ResidenceController::class, 'editResidence']);
         $this->router->post('/user/delete-residence/{id}', [ResidenceController::class, 'deleteResidence']);
+
+        // RESERVATION SECTION:
+        $this->router->post('/submit-reservation', [ReservationController::class, 'submitReservation']);
+
 
         // USER SECTION:
         $this->router->get('/manage-listings', [UserController::class, 'manageListings']);

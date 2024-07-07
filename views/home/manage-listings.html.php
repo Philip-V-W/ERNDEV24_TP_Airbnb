@@ -146,10 +146,10 @@ function asset($path): string
                                         <?php endif; ?>
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title"><?= htmlspecialchars($listing->title) ?></h5>
-                                        <p class="card-text"><?= htmlspecialchars($listing->description) ?></p>
+                                        <h5 class="card-title"><?= htmlspecialchars($listing->title) ?></h5><br>
+                                        <p class="card-text"><?= htmlspecialchars($listing->description) ?></p><br>
                                         <p class="card-text">
-                                            <strong><?= htmlspecialchars($listing->price_per_night ?? '') ?> €</strong>
+                                            <strong><?= htmlspecialchars($listing->price_per_night ?? '') ?> € per guest</strong>
                                         </p>
                                         <div class="d-flex justify-content-between">
                                             <div>

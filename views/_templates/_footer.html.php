@@ -129,15 +129,16 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="script.js" defer></script>
-<script>
-    document.querySelectorAll('.card .carousel-item img').forEach((img) => {
-        img.addEventListener('click', function (event) {
-            window.open('results.html', '_blank');
-            event.stopPropagation(); // Previene l'eventuale bubbling se ci sono altri listener negli elementi parent
-        });
-    });
-</script>
+<script src="/script.js"></script>
+
+<!--<script>-->
+<!--    document.querySelectorAll('.card .carousel-item img').forEach((img) => {-->
+<!--        img.addEventListener('click', function (event) {-->
+<!--            window.open('results.html', '_blank');-->
+<!--            event.stopPropagation(); // Prevents the event from bubbling up the DOM tree, preventing any parent handlers from being notified of the event.-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 </body>
 
 </html>

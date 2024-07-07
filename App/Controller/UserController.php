@@ -52,7 +52,6 @@ class UserController extends Controller
     }
 
 
-
     public function userHasListings($userId): bool
     {
         $userRepository = AppRepoManager::getRm()->getUserRepository();
@@ -72,9 +71,6 @@ class UserController extends Controller
         // Logic to delete user profile data
         $this->redirect('/user/deleted');
     } //TODO: Potential future implementation
-
-
-
 
 
 
