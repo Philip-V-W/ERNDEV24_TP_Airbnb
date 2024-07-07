@@ -4,13 +4,14 @@ namespace App\Repository;
 
 use Core\Repository\Repository;
 use App\Model\Type;
-use Exception;
 use PDO;
+use Exception;
 
 class TypeRepository extends Repository
 {
     /**
      * Returns the name of the table associated with the repository.
+     *
      * @return string The table name.
      */
     public function getTableName(): string
@@ -18,7 +19,13 @@ class TypeRepository extends Repository
         return 'type';
     }
 
-    public function findTypeById(int $id)
+    /**
+     * Finds a type by its ID.
+     *
+     * @param int $id The ID of the type to find.
+     * @return object|null The found type as an object or null if not found.
+     */
+    public function findTypeById(int $id): ?object
     {
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :id");
@@ -29,5 +36,4 @@ class TypeRepository extends Repository
             return null;
         }
     }
-
 }

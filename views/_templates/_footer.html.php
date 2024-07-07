@@ -93,7 +93,8 @@
                 <p>EUR</p>
             </div>
             <div class="d-none d-md-block icons">
-                <a href="#"><img src="/assets/icons/facebook-square-social-logo-svgrepo-com.svg" alt="facebook icon"></a>
+                <a href="#"><img src="/assets/icons/facebook-square-social-logo-svgrepo-com.svg"
+                                 alt="facebook icon"></a>
                 <a href="#"><img src="/assets/icons/twitter-square-logo-svgrepo-com.svg" alt="twitter icon"></a>
                 <a href="#"><img src="/assets/icons/instagram-svgrepo-com.svg" alt="instagram icon"></a>
             </div>
@@ -131,14 +132,6 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="/script.js"></script>
 
-<!--<script>-->
-<!--    document.querySelectorAll('.card .carousel-item img').forEach((img) => {-->
-<!--        img.addEventListener('click', function (event) {-->
-<!--            window.open('results.html', '_blank');-->
-<!--            event.stopPropagation(); // Prevents the event from bubbling up the DOM tree, preventing any parent handlers from being notified of the event.-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 </body>
 
 </html>

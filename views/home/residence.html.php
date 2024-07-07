@@ -155,12 +155,14 @@ foreach ($equipments as $equipment) {
                             <div class="form-group"><br>
                                 <label for="photo_url">Upload your cover image</label>
                                 <input type="file" name="photo_url" class="form-control">
-                            </div><br>
+                            </div>
+                            <br>
 
                             <div class="form-group">
                                 <label for="additional_photos">Upload additional images</label>
                                 <input type="file" name="photo_url_additional[]" class="form-control" multiple>
-                            </div><br>
+                            </div>
+                            <br>
                             <button type="submit" class="reserve-btn mb-3">Insert your residence</button>
                         </form>
                     </div>

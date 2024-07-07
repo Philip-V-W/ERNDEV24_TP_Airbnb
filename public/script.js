@@ -1,21 +1,21 @@
 // This file contains the JavaScript code for the client side of the application.
-var scrollContainer = document.getElementById('scroll-container');
-var prevButton = document.getElementById('prev');
-var nextButton = document.getElementById('next');
+
+// Scroll functionality for a container
+const scrollContainer = document.getElementById('scroll-container');
+const prevButton = document.getElementById('prev');
+const nextButton = document.getElementById('next');
 
 // Add event listeners to the prev and next buttons
-prevButton.addEventListener('click', function () {
+prevButton.addEventListener('click', () => {
     scrollContainer.scrollLeft -= 200;
 });
 
-// Add event listeners to the prev and next buttons
-nextButton.addEventListener('click', function () {
+nextButton.addEventListener('click', () => {
     scrollContainer.scrollLeft += 200;
 });
 
-
-
-document.addEventListener('DOMContentLoaded', (event) => {
+// Initialize date input fields and set their minimum values
+document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
     const dateStartInput = document.getElementById('date_start');
     const dateEndInput = document.getElementById('date_end');
@@ -23,15 +23,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
     dateStartInput.setAttribute('min', today);
     dateEndInput.setAttribute('min', today);
 
-    dateStartInput.addEventListener('change', function() {
-        const dateStart = this.value;
+    // Update the end date minimum value when the start date changes
+    dateStartInput.addEventListener('change', () => {
+        const dateStart = dateStartInput.value;
         dateEndInput.setAttribute('min', dateStart);
         calculateTotalPrice();
     });
 
+    // Recalculate total price when the end date changes
     dateEndInput.addEventListener('change', calculateTotalPrice);
 });
 
+// Calculate the total price based on the selected start and end dates
 function calculateTotalPrice() {
     const pricePerNight = parseFloat(document.getElementById('price_per_night').dataset.price);
     const dateStart = new Date(document.getElementById('date_start').value);
@@ -50,6 +53,7 @@ function calculateTotalPrice() {
     }
 }
 
+// Submit a reservation using the form data
 function submitReservation() {
     const dateStart = document.getElementById('date_start').value;
     const dateEnd = document.getElementById('date_end').value;
@@ -82,8 +86,7 @@ function submitReservation() {
                 alert('Error: ' + data.error);
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Error:', error);
         });
 }
-

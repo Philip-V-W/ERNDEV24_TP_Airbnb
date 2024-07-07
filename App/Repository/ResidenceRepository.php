@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\AppRepoManager;
-use App\Model\User;
 use Core\Repository\Repository;
 use App\Model\Residence;
 use Exception;
@@ -13,6 +11,7 @@ class ResidenceRepository extends Repository
 {
     /**
      * Returns the name of the table associated with the repository.
+     *
      * @return string The table name.
      */
     public function getTableName(): string
@@ -21,17 +20,19 @@ class ResidenceRepository extends Repository
     }
 
     /**
-     * Function that adds a new residence to the database.
+     * Adds a new residence to the database.
+     *
      * @param array $data The data of the residence to add.
      * @return ?int The ID of the added residence or null if the operation fails.
      */
     public function insertResidence(array $data): ?int
     {
         // SQL query to insert a new residence
-        $q = sprintf('INSERT INTO `%s` (`title`, `description`, `price_per_night`, `size`, `nb_rooms`, 
-                             `nb_beds`, `nb_baths`, `nb_guests`, `is_active`, `type_id`, `user_id`, `address_id`) 
-                             VALUES (:title, :description, :price_per_night, :size, :nb_rooms, 
-                             :nb_beds, :nb_baths, :nb_guests, :is_active, :type_id, :user_id, :address_id)',
+        $q = sprintf(
+            'INSERT INTO `%s` (`title`, `description`, `price_per_night`, `size`, `nb_rooms`, 
+             `nb_beds`, `nb_baths`, `nb_guests`, `is_active`, `type_id`, `user_id`, `address_id`) 
+             VALUES (:title, :description, :price_per_night, :size, :nb_rooms, 
+             :nb_beds, :nb_baths, :nb_guests, :is_active, :type_id, :user_id, :address_id)',
             $this->getTableName()
         );
 
@@ -39,18 +40,20 @@ class ResidenceRepository extends Repository
         $stmt = $this->pdo->prepare($q);
 
         // Return null if statement preparation fails
-        if (!$stmt) return null;
+        if (!$stmt) {
+            return null;
+        }
 
         // Execute the statement with the residence data
         $stmt->execute($data);
 
         // Get the last inserted ID
-        return $this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId();
     }
 
-
     /**
-     * Function to find a residence by its ID.
+     * Finds a residence by its ID.
+     *
      * @param int $id The ID of the residence to find.
      * @return ?Residence The found residence or null if not found.
      */
@@ -58,17 +61,16 @@ class ResidenceRepository extends Repository
     {
         try {
             $q = sprintf('SELECT * FROM %s WHERE `id` = :id', $this->getTableName());
-
             $stmt = $this->pdo->prepare($q);
 
-            if (!$stmt) return null;
+            if (!$stmt) {
+                return null;
+            }
 
             $stmt->execute(['id' => $id]);
-
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $result ? new Residence($result) : null;
-
         } catch (Exception $e) {
             error_log("Error finding residence by ID: " . $e->getMessage());
             return null;
@@ -76,7 +78,8 @@ class ResidenceRepository extends Repository
     }
 
     /**
-     * Function to update a residence by its ID.
+     * Updates a residence by its ID.
+     *
      * @param int $id The ID of the residence to update.
      * @param array $data The data to update the residence with.
      * @return bool True if the update was successful, false otherwise.
@@ -86,21 +89,23 @@ class ResidenceRepository extends Repository
         try {
             $q = sprintf(
                 'UPDATE %s SET 
-            `title` = :title, 
-            `description` = :description, 
-            `price_per_night` = :price_per_night, 
-            `size` = :size,
-            `nb_rooms` = :nb_rooms,
-            `nb_beds` = :nb_beds,
-            `nb_baths` = :nb_baths,
-            `nb_guests` = :nb_guests,
-            `type_id` = :type_id
-        WHERE `id` = :id',
+                `title` = :title, 
+                `description` = :description, 
+                `price_per_night` = :price_per_night, 
+                `size` = :size,
+                `nb_rooms` = :nb_rooms,
+                `nb_beds` = :nb_beds,
+                `nb_baths` = :nb_baths,
+                `nb_guests` = :nb_guests,
+                `type_id` = :type_id
+                WHERE `id` = :id',
                 $this->getTableName()
             );
 
             $stmt = $this->pdo->prepare($q);
-            if (!$stmt) return false;
+            if (!$stmt) {
+                return false;
+            }
 
             return $stmt->execute([
                 'title' => $data['title'],
@@ -120,9 +125,9 @@ class ResidenceRepository extends Repository
         }
     }
 
-
     /**
-     * Function to delete a residence by its ID.
+     * Deletes a residence by its ID.
+     *
      * @param int $id The ID of the residence to delete.
      * @return bool True if the deletion was successful, false otherwise.
      */
@@ -152,28 +157,26 @@ class ResidenceRepository extends Repository
         }
     }
 
-
-
-
-
-
-
-
+    /**
+     * Retrieves all active listings.
+     *
+     * @return array An array of active listings with user and image information.
+     */
     public function getAllListings(): array
     {
         $query = "
-    SELECT
-        r.id,
-        r.title,
-        r.price_per_night,
-        u.firstname AS user_firstname,
-        u.lastname AS user_lastname,
-        m.image_path
-    FROM residence r
-    JOIN user u ON r.user_id = u.id
-    LEFT JOIN media m ON r.id = m.residence_id
-    WHERE r.is_active = 1
-    ";
+            SELECT
+                r.id,
+                r.title,
+                r.price_per_night,
+                u.firstname AS user_firstname,
+                u.lastname AS user_lastname,
+                m.image_path
+            FROM residence r
+            JOIN user u ON r.user_id = u.id
+            LEFT JOIN media m ON r.id = m.residence_id
+            WHERE r.is_active = 1
+        ";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -199,15 +202,4 @@ class ResidenceRepository extends Repository
         // Flatten the associative array to pass to the view
         return array_values($listings);
     }
-
-
-
-
-
-
-
-
-
-
-
 }

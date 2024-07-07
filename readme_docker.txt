@@ -4,7 +4,7 @@ Build and Start: Run the Docker commands to build and start your containers:
 
 docker-compose down
 docker-compose build
-docker-compose up -d
+docker-compose up
 
 
 Initialize Composer: If your new project requires Composer dependencies, install them:

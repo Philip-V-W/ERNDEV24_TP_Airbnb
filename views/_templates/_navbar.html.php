@@ -99,7 +99,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                            <a class="dropdown-item" type="button" href="/residence">Airbnb your home</a>
+                        <a class="dropdown-item" type="button" href="/residence">Airbnb your home</a>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Refer a Host</button>
@@ -130,7 +130,8 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards</button>
+                        <button class="dropdown-item modal-dialog modal-fullscreen-sm-down" type="button">Gift Cards
+                        </button>
                     </li>
                     <li>
                         <button class="dropdown-item" type="button">Airbnb your home</button>
@@ -379,7 +380,6 @@
     <button class="carousel-control-prev" type="button" data-bs-target="#iconsCarousel" data-bs-slide="prev">
         <img src="/assets/icons/left.png" alt="">
     </button>
-    <!-- Pulsante successivo -->
     <button class="carousel-control-next" type="button" data-bs-target="#iconsCarousel" data-bs-slide="next">
         <img src="/assets/icons/right.png" alt="">
     </button>

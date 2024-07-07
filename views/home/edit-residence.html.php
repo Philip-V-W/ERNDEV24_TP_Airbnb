@@ -24,7 +24,6 @@ foreach ($equipments as $equipment) {
     }
 }
 
-
 // Fetch the residence to be edited
 $residence = AppRepoManager::getRm()->getResidenceRepository()->findResidenceById($residence_id);
 
@@ -121,25 +120,25 @@ $residence = AppRepoManager::getRm()->getResidenceRepository()->findResidenceByI
                             <!-- Address Form Fields -->
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="text" id="addresshost" name="address" class="form-control"
+                                <input type="" id="addresshost" name="address" class="form-control"
                                        value="<?= htmlspecialchars($address->address) ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="city">City</label>
-                                <input type="text" name="city" class="form-control"
+                                <input type="" name="city" class="form-control"
                                        value="<?= htmlspecialchars($address->city) ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="zip">Zip code</label>
-                                <input type="text" name="zip" class="form-control"
+                                <input type="" name="zip" class="form-control"
                                        value="<?= htmlspecialchars($address->zip_code) ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="country">Country</label>
-                                <input type="text" name="country" class="form-control"
+                                <input type="" name="country" class="form-control"
                                        value="<?= htmlspecialchars($address->country) ?>">
                             </div>
 
@@ -168,27 +167,29 @@ $residence = AppRepoManager::getRm()->getResidenceRepository()->findResidenceByI
                                 ?>
                             </div>
 
-
-                            <div class="form-group">
-                                <label for="photo_url">Upload your cover image</label>
+                            <div class="form-group"><br>
                                 <?php if (!empty($images)): ?>
                                     <div>
                                         <?php foreach ($images as $image): ?>
-                                            <img src="/<?= htmlspecialchars($image) ?>" alt="Residence Image" style="width:100px; height:100px;">
+                                            <img src="/<?= htmlspecialchars($image) ?>" alt="Residence Image"
+                                                 style="width:100px; height:100px;">
                                         <?php endforeach; ?>
-                                    </div>
+                                    </div><br>
                                 <?php else: ?>
-                                    <img src="/assets/default-image.jpg" alt="Default Image" style="width:100px; height:100px;">
+                                    <img src="/assets/default-image.jpg" alt="Default Image"
+                                         style="width:100px; height:100px;">
                                 <?php endif; ?>
+                                <label for="photo_url">Upload your cover image</label>
                                 <input type="file" name="photo_url" class="form-control">
                             </div>
+                            <br>
 
                             <div class="form-group">
                                 <label for="additional_photos">Upload additional images</label>
                                 <input type="file" name="photo_url_additional[]" class="form-control" multiple>
                             </div>
-
                             <br>
+
                             <button type="submit" class="reserve-btn mb-3">Update your residence</button>
                         </form>
                     </div>

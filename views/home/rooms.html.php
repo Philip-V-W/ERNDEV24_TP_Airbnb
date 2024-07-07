@@ -1,13 +1,10 @@
 <?php
-// Ensure the asset function is available
+
 if (!function_exists('asset')) {
     function asset($path): string
     {
-        // Ensure there's no leading slash
         $trimmedPath = ltrim($path, '/');
-        // Construct the full path
         $fullPath = "/" . $trimmedPath;
-        // Log for debugging purposes
         error_log("Generated asset path: " . $fullPath);
         return $fullPath;
     }
@@ -150,9 +147,9 @@ if (!function_exists('asset')) {
                         <div class="row">
                             <span class="col-2"><img src="/assets/person4.jpg" alt=""></span>
                             <span class="col-10">
-            <p>Hosted by <?= htmlspecialchars($host->lastname . ' ' . $host->firstname) ?></p>
-            <p>Super Host · 9 years hosting</p>
-        </span>
+                                    <p>Hosted by <?= htmlspecialchars($host->lastname . ' ' . $host->firstname) ?></p>
+                                    <p>Super Host · 9 years hosting</p>
+                             </span>
                         </div>
 
                         <div class="features-description">
@@ -179,10 +176,7 @@ if (!function_exists('asset')) {
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <!-- Calendar -->
-
             </div>
             <!-- Reservation card-->
             <div class="col-12 col-lg-5 m-0 p-0 booking-modal">
@@ -252,20 +246,16 @@ if (!function_exists('asset')) {
                                         onclick="window.location.href='/login-form'">Login to Reserve
                                 </button>
                             <?php endif; ?>
-
-
                             <hr>
                             <div class="d-flex justify-content-between total-price">
                                 <div>Total</div>
                                 <div id="total_price_display">0 €</div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
-
 </body>
