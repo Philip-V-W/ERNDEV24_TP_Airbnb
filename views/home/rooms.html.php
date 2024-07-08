@@ -186,7 +186,7 @@ if (!function_exists('asset')) {
                             <div class="price" id="price_per_night"
                                  data-price="<?= htmlspecialchars($listing->price_per_night) ?>">
                                 <?= htmlspecialchars($listing->price_per_night) ?> €
-                                <span class="text-muted" style="font-size: 16px;">night</span>
+                                <span class="text-muted" style="font-size: 16px;">per night</span>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between reservation-details mb-3">
