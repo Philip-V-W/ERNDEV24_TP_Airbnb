@@ -137,10 +137,11 @@ function asset($path): string
                                             </p>
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <?php if (property_exists($listing, 'disactive') && $listing->disactive == 0): ?>
+                                                    <!-- TODO: activate/deactivate option -->
+                                                    <?php if (property_exists($listing, 'deactivate') && $listing->deactivate == 0): ?>
                                                         <a href="/disable/<?= htmlspecialchars($listing->id) ?>"
                                                            class="btn btn-sm btn-outline-warning">Disable</a>
-                                                    <?php elseif (property_exists($listing, 'disactive') && $listing->disactive == 1): ?>
+                                                    <?php elseif (property_exists($listing, 'deactivate') && $listing->deactivate == 1): ?>
                                                         <a href="/enable/<?= htmlspecialchars($listing->id) ?>"
                                                            class="btn btn-sm btn-outline-success">Enable</a>
                                                     <?php endif; ?>
